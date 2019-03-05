@@ -18,7 +18,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="20190218_news_list" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -46,7 +46,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="35" />
     <option name="y" value="337" />
     <option name="width" value="1331" />
@@ -113,7 +113,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551792510315" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551792926044" />
     <property name="last_opened_file_path" value="$USER_HOME$/u潘/zi/new/qsurvey" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -164,6 +164,7 @@
         <item itemvalue="JUnit.PlatformOfHopingApplicationTests" />
         <item itemvalue="JUnit.PlatformOfHopingApplicationTests" />
         <item itemvalue="JUnit.PlatformOfHopingApplicationTests" />
+        <item itemvalue="JUnit.PlatformOfHopingApplicationTests" />
       </list>
     </recent_temporary>
   </component>
@@ -183,7 +184,7 @@
       <workItem from="1551696102157" duration="5294000" />
       <workItem from="1551714705542" duration="4260000" />
       <workItem from="1551698517494" duration="1352000" />
-      <workItem from="1551790192998" duration="2265000" />
+      <workItem from="1551790192998" duration="2546000" />
     </task>
     <task id="LOCAL-00001" summary="配置文件">
       <created>1551792370040</created>
@@ -192,7 +193,21 @@
       <option name="project" value="LOCAL" />
       <updated>1551792370040</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="配置文件">
+      <created>1551792495180</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1551792495180</updated>
+    </task>
+    <task id="LOCAL-00003" summary="配置文件">
+      <created>1551792556823</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1551792556823</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -201,13 +216,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23745000" />
+    <option name="totallyTimeSpent" value="24026000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="27" width="1331" height="741" extended-state="6" />
     <layout>
       <window_info id="Web" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19407639" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19407639" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -225,7 +240,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32972974" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.22279793" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32642487" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Spring" order="12" weight="0.3298791" />
       <window_info anchor="bottom" id="Messages" order="13" />
@@ -318,6 +333,11 @@
         <state relative-caret-position="238">
           <caret line="14" column="52" lean-forward="true" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4896" />
       </provider>
     </entry>
   </component>
