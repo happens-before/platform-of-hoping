@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.IPictureDao">
+    <sql id="Base_Column_List">
+      id,
+      picture_id,
+      news_id;
+      picture_path,
+      create_time,
+      update_time
+    </sql>
+    <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto" parameterType="java.util.List">
+        select picture_path,news_id from picture
+        where
+        news_id=
+        <foreach item="item" collection="list" separator=",">
+        (#{item.newsId})
+        </foreach>
+    </select>
+
+
+</mapper>
