@@ -2,8 +2,12 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 
 import com.xupt.edu.zwy.platformofhoping.common.CheckArgumentUtil;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
+import com.xupt.edu.zwy.platformofhoping.model.News;
+import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -53,6 +57,31 @@ public class NewsController {
 
         log.info("out /news/info");
         return CommonJsonResult.success(newsInfoById);
+
+    }
+
+    @GetMapping("/reply")
+    public CommonJsonResult<List<Reply>> getReplyByCommentId(@RequestParam("commentId") String commentId) {
+        log.info("into /news/reply,commentId:{}", commentId);
+        //todo 验证本人身份
+
+        //检验参数的合法性
+        CheckArgumentUtil.checkCommentId(commentId);
+        List<Reply> replies = newsService.getReplyByCommentId(commentId);
+        log.info("out /news/reply");
+        return CommonJsonResult.success(replies);
+    }
+
+    @GetMapping("/list")
+    public CommonJsonResult<List<News>> newsList(NewsListReq newsListReq) {
+        log.info("into /news/list,newsListReq:{}", newsListReq);
+        //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
+        //todo  验证参数信息
+        CheckArgumentUtil.checkNewsListReq(newsListReq);
+
+        //todo 若没有搜索条件，则找到最新的50条新闻记录，若有搜索条件则根据搜索条件进行查询新闻记录
+        List<News> newsList = newsService.getNewsList(newsListReq);
+        return CommonJsonResult.success(newsList);
     }
 
 }

@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.INewsDao">
+<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.ICommentDao">
     <sql id="Base_Column_List">
       id,
+      comment_id,
       news_id,
-      news_name,
-      news_description,
-      news_content,
-      news_creator,
-      status,
-      news_count,
-      published_time,
+      reviewer,
+      comment_content,
       create_time,
       update_time
     </sql>
-    <select id="selectLastFiveNewsId" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id from news order by published_time desc news_count desc limit 5;
-    </select>
-
-    <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
-        select news_id,news_name,news_description,news_content,news_creator,news_count,published_time
-        from news where news_id=#{newsId};
+    <select id="selectCommentByNewsId" resultType="com.xupt.edu.zwy.platformofhoping.model.Comment"
+            parameterType="String">
+        select * from comment where news_id=#{newsId} order by update_time desc
     </select>
 </mapper>

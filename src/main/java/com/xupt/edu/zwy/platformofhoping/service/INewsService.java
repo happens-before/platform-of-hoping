@@ -2,6 +2,9 @@ package com.xupt.edu.zwy.platformofhoping.service;
 
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
+import com.xupt.edu.zwy.platformofhoping.model.News;
+import com.xupt.edu.zwy.platformofhoping.model.Reply;
 
 import java.util.List;
 
@@ -15,5 +18,10 @@ import java.util.List;
  */
 public interface INewsService {
     List<NewsHomeDto> getNewsHome();
+
     NewsInfoDto getNewsInfoById(String newsId);
+
+    List<Reply> getReplyByCommentId(String commentId);
+
+    List<News> getNewsList(NewsListReq newsListReq);
 }

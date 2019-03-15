@@ -3,23 +3,15 @@
 <mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.INewsDao">
     <sql id="Base_Column_List">
       id,
-      news_id,
-      news_name,
-      news_description,
-      news_content,
-      news_creator,
-      status,
-      news_count,
-      published_time,
+      reply_id,
+      comment_id,
+      replier,
+      reply_content,
       create_time,
       update_time
     </sql>
-    <select id="selectLastFiveNewsId" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id from news order by published_time desc news_count desc limit 5;
-    </select>
-
-    <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
-        select news_id,news_name,news_description,news_content,news_creator,news_count,published_time
-        from news where news_id=#{newsId};
+    <select id="selectReplyByCommentId" resultType="com.xupt.edu.zwy.platformofhoping.model.Reply"
+            parameterType="String">
+        select * from reply where comment_id=#{commentId} order by update_time desc
     </select>
 </mapper>

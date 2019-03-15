@@ -14,12 +14,32 @@
       create_time,
       update_time
     </sql>
+
     <select id="selectLastFiveNewsId" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id from news order by published_time desc news_count desc limit 5;
+        select news_id from news order by published_time desc news_count desc limit 5
     </select>
 
     <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
         select news_id,news_name,news_description,news_content,news_creator,news_count,published_time
-        from news where news_id=#{newsId};
+        from news where news_id=#{newsId}
     </select>
+
+    <select id="selectNewsList" resultType="com.xupt.edu.zwy.platformofhoping.model.News"
+            parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsListReq">
+        select news_id,news_name,news_creator,status,news_count,update_time from news
+        <where>
+            valid=1
+            <if test="newsName != null and newsName != ''">
+                and news_name like CONCAT('%',#{newsName}, '%')
+            </if>
+            <if test="newsCreator !=null and newsCreator != ''">
+                and news_creator=#{newsCreator}
+            </if>
+            <if test="status != 0">
+                and status=#{status}
+            </if>
+        </where>
+        order by status desc ,update_time desc
+    </select>
+
 </mapper>

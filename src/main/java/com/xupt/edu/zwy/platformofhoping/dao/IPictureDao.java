@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * @author wanyuezhao
+ */
 @Mapper
 public interface IPictureDao {
     List<NewsHomeDto> getNewsHomeInfo(List<NewsDto> newsDtos);
