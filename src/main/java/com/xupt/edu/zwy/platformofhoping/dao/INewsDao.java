@@ -23,4 +23,6 @@ public interface INewsDao {
     int addNews(NewsAddReq newsAddReq);
 
     int updateNews(NewsAddReq newsAddReq);
+
+    int deleteNews(NewsDto newsDto);
 }

@@ -19,7 +19,6 @@ create table `news`(
 `valid` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT ' 0 1 ',
 `status` tinyint(4) unsigned not null default '00' comment '00 未发布 10 已发布 20 暂停 30全部',
 `news_count` int(11) unsigned not null default '0' comment '新闻访问量',
-`published_time` datetime not null default current_timestamp comment '发布时间',
 `create_time` datetime not null default current_timestamp comment '创建时间',
 `update_time` datetime not null default current_timestamp on update current_timestamp comment '更新时间',
 primary key (`id`),

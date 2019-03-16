@@ -2,17 +2,21 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 
 import com.xupt.edu.zwy.platformofhoping.common.CheckArgumentUtil;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
+import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -86,7 +90,7 @@ public class NewsController {
         return CommonJsonResult.success(newsList);
     }
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public CommonJsonResult addNews(NewsAddReq newsAddReq) {
         log.info("into /news/add,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
@@ -98,7 +102,7 @@ public class NewsController {
         return CommonJsonResult.success();
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     public CommonJsonResult updateNews(NewsAddReq newsAddReq) {
         log.info("into /news/update,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
@@ -110,5 +114,44 @@ public class NewsController {
         return CommonJsonResult.success();
     }
 
+    @PostMapping("/publish")
+    public CommonJsonResult publishNews(NewsAddReq newsAddReq) {
+        log.info("into /news/publish,newsAddReq:{}", newsAddReq);
+        //todo 检查参数合法性
+
+        //todo 验证身份
+
+        int result = newsService.publishNews(newsAddReq);
+        log.info("out /news/publish,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/delete")
+    public CommonJsonResult deleteNews(NewsDto newsDto) {
+        log.info("into /news/delete,newsDto:{}", newsDto);
+        //todo 检查参数合法性
+
+        //todo 验证身份
+
+        int result = newsService.deleteNews(newsDto);
+        log.info("out /news/delete,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/addComment")
+    public CommonJsonResult addComment(CommentReq commentReq) {
+        log.info("into /news/addComment,commentReq:{}", commentReq);
+        int result = newsService.addComment(commentReq);
+        log.info("out /news/addComment,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/addReply")
+    public CommonJsonResult addReply(ReplyReq replyReq) {
+        log.info("into /news/addReply,replyReq:{}", replyReq);
+        int result = newsService.addReply(replyReq);
+        log.info("out /news/addReply,result:{}", result);
+        return CommonJsonResult.success();
+    }
 }
 

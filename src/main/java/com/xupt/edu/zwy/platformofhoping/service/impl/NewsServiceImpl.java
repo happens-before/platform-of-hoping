@@ -6,17 +6,20 @@ import com.xupt.edu.zwy.platformofhoping.dao.ICommentDao;
 import com.xupt.edu.zwy.platformofhoping.dao.INewsDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IPictureDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IReplyDao;
+import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Comment;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
+import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +97,7 @@ public class NewsServiceImpl implements INewsService {
     @Transactional(rollbackFor = Exception.class)
     public int addNews(NewsAddReq newsAddReq) {
         try {
+            newsAddReq.setNewsId(CommonUtils.getUUId32());
             int result = iNewsDao.addNews(newsAddReq);
             return result;
         } catch (Exception e) {
@@ -109,10 +113,60 @@ public class NewsServiceImpl implements INewsService {
             int result = iNewsDao.updateNews(newsAddReq);
             return result;
         } catch (Exception e) {
-            log.error("新闻添加失败，请重试");
+            log.error("新闻更新失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int publishNews(NewsAddReq newsAddReq) {
+        try {
+            newsAddReq.setStatus(30);
+            int result = iNewsDao.updateNews(newsAddReq);
+            return result;
+        } catch (Exception e) {
+            log.error("新闻发布失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteNews(NewsDto newsDto) {
+        try {
+            int result = iNewsDao.deleteNews(newsDto);
+            return result;
+        } catch (Exception e) {
+            log.error("新闻删除失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int addComment(CommentReq commentReq) {
+        try {
+            commentReq.setCommentId(CommonUtils.getUUId32());
+            int result = iCommentDao.addComment(commentReq);
+            return result;
+        }catch (Exception e){
+            log.error("评论添加失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int addReply(ReplyReq replyReq) {
+        try {
+            replyReq.setReplyId(CommonUtils.getUUId32());
+            int result = iReplyDao.addReply(replyReq);
+            return result;
+        }catch (Exception e){
+            log.error("评论添加失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
 
 }

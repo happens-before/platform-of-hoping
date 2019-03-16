@@ -10,8 +10,14 @@
       create_time,
       update_time
     </sql>
+
     <select id="selectCommentByNewsId" resultType="com.xupt.edu.zwy.platformofhoping.model.Comment"
             parameterType="String">
         select * from comment where news_id=#{newsId} order by update_time desc
     </select>
+
+    <insert id="addComment" parameterType="com.xupt.edu.zwy.platformofhoping.dto.CommentReq">
+        insert into comment (comment_id,news_id,reviewer,comment_content) values
+        (#{commentId},#{newsId},#{reviewer},#{commentContent});
+    </insert>
 </mapper>

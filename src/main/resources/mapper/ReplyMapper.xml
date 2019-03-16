@@ -14,4 +14,8 @@
             parameterType="String">
         select * from reply where comment_id=#{commentId} order by update_time desc
     </select>
+    <insert id="addReply" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ReplyReq">
+        insert into reply (reply_id,comment_id,replier,reply_content) values
+        (#{replyId},#{commentId},#{replier},#{replyContent});
+    </insert>
 </mapper>

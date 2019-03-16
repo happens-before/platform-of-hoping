@@ -23,7 +23,6 @@ public class NewsInfoDto {
     private String newsContent;
     private String newsCreator;
     private Integer newsCount;
-    private Date publishedTime;
     private List<Comment> comments;
 
     public void setNewsInfoDto(News news, List<Comment> comments) {
@@ -33,7 +32,6 @@ public class NewsInfoDto {
         this.setNewsContent(news.getNewsContent());
         this.setNewsCount(news.getNewsCount());
         this.setNewsCreator(news.getNewsCreator());
-        this.setPublishedTime(news.getPublishedTime());
         this.setComments(comments);
     }
 }

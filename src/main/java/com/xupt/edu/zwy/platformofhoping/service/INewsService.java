@@ -1,10 +1,13 @@
 package com.xupt.edu.zwy.platformofhoping.service;
 
+import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 
@@ -30,4 +33,12 @@ public interface INewsService {
     int addNews(NewsAddReq newsAddReq);
 
     int updateNews(NewsAddReq newsAddReq);
+
+    int publishNews(NewsAddReq newsAddReq);
+
+    int deleteNews(NewsDto newsDto);
+
+    int addComment(CommentReq commentReq);
+
+    int addReply(ReplyReq replyReq);
 }

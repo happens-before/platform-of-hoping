@@ -3,10 +3,12 @@ package com.xupt.edu.zwy.platformofhoping.util;
 import java.util.UUID;
 
 /**
- * @Descriptio 常用工具类
- * @Author wziyuan.wang
- * @Date 19-1-9
- * @Time 上午11:10
+ * Created with IntelliJ IDEA
+ * Description:
+ *
+ * @author wanyuezhao
+ * @Date 19-3-14
+ * @Time 下午2:02
  */
 public class CommonUtils {
 

@@ -2,6 +2,8 @@ package com.xupt.edu.zwy.platformofhoping.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA
  * Description:
@@ -17,4 +19,5 @@ public class NewsAddReq {
     private String newsDescription;
     private String newsContent;
     private String newsCreator;
+    private Integer status;
 }
