@@ -23,11 +23,11 @@ public class User {
     private String community;
     private Boolean minister;
     private String userName;
+    private String password;
     private String sex;
     private Integer age;
     private String email;
     private String phone;
     private Date createTime;
     private Date updateTime;
-    private String password;
 }

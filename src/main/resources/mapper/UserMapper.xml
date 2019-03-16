@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.IUserDao">
+    <sql id="Base_Column_List">
+      id,
+      user_id,
+      school,
+      college,
+      profession,
+      user_sno,
+      community,
+      minister,
+      user_name,
+      password,
+      sex,
+      age,
+      email,
+      phone,
+      create_time,
+      update_time
+    </sql>
+
+    <insert id="addUser" parameterType="com.xupt.edu.zwy.platformofhoping.model.User">
+        insert into user (user_id,school,college,profession,user_sno,community,minister,user_name,sex,age,email,phone)
+        values
+        (#{userId},#{school},#{college},#{profession},#{userSno},#{community},#{minister},#{userName},#{sex},#{age},#{email},#{phone});
+    </insert>
+
+    <select id="isUser" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+        select * from user where school=#{school} and user_sno=#{userSno} and password=#{password} and valid=1;
+    </select>
+</mapper>
