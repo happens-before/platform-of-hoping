@@ -2,6 +2,8 @@ package com.xupt.edu.zwy.platformofhoping.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA
  * Description:
@@ -13,4 +15,6 @@ import lombok.Data;
 @Data
 public class NewsDto {
     private String newsId;
+    private Integer status;
+    private Date publishedTime;
 }

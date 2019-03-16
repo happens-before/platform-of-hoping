@@ -2,10 +2,11 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 
 import com.xupt.edu.zwy.platformofhoping.common.CheckArgumentUtil;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
-import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
@@ -73,15 +74,40 @@ public class NewsController {
     }
 
     @GetMapping("/list")
-    public CommonJsonResult<List<News>> newsList(NewsListReq newsListReq) {
+    public CommonJsonResult<PageInfo<News>> newsList(NewsListReq newsListReq) {
         log.info("into /news/list,newsListReq:{}", newsListReq);
         //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
         //todo  验证参数信息
         CheckArgumentUtil.checkNewsListReq(newsListReq);
 
         //todo 若没有搜索条件，则找到最新的50条新闻记录，若有搜索条件则根据搜索条件进行查询新闻记录
-        List<News> newsList = newsService.getNewsList(newsListReq);
+        PageInfo<News> newsList = newsService.getNewsList(newsListReq);
+        log.info("out /news/list");
         return CommonJsonResult.success(newsList);
+    }
+
+    @GetMapping("/add")
+    public CommonJsonResult addNews(NewsAddReq newsAddReq) {
+        log.info("into /news/add,newsAddReq:{}", newsAddReq);
+        //todo 检查参数合法性
+
+        //todo 验证身份
+
+        int result = newsService.addNews(newsAddReq);
+        log.info("out /news/add,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @GetMapping("/update")
+    public CommonJsonResult updateNews(NewsAddReq newsAddReq) {
+        log.info("into /news/update,newsAddReq:{}", newsAddReq);
+        //todo 检查参数合法性
+
+        //todo 验证身份
+
+        int result = newsService.updateNews(newsAddReq);
+        log.info("out /news/update,result:{}", result);
+        return CommonJsonResult.success();
     }
 
 }

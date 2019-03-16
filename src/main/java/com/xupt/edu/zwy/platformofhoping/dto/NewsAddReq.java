@@ -1,0 +1,20 @@
+package com.xupt.edu.zwy.platformofhoping.dto;
+
+import lombok.Data;
+
+/**
+ * Created with IntelliJ IDEA
+ * Description:
+ *
+ * @author wanyuezhao
+ * @Date 19-3-16
+ * @Time 下午3:46
+ */
+@Data
+public class NewsAddReq {
+    private String newsId;
+    private String newsName;
+    private String newsDescription;
+    private String newsContent;
+    private String newsCreator;
+}

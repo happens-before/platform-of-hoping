@@ -1,8 +1,10 @@
 package com.xupt.edu.zwy.platformofhoping.service;
 
+import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 
@@ -23,5 +25,9 @@ public interface INewsService {
 
     List<Reply> getReplyByCommentId(String commentId);
 
-    List<News> getNewsList(NewsListReq newsListReq);
+    PageInfo<News> getNewsList(NewsListReq newsListReq);
+
+    int addNews(NewsAddReq newsAddReq);
+
+    int updateNews(NewsAddReq newsAddReq);
 }

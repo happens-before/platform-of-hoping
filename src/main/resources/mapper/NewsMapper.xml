@@ -9,6 +9,7 @@
       news_content,
       news_creator,
       status,
+      valid,
       news_count,
       published_time,
       create_time,
@@ -16,12 +17,12 @@
     </sql>
 
     <select id="selectLastFiveNewsId" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id from news order by published_time desc news_count desc limit 5
+        select news_id from news where valid=1 order by published_time desc news_count desc limit 5
     </select>
 
     <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
         select news_id,news_name,news_description,news_content,news_creator,news_count,published_time
-        from news where news_id=#{newsId}
+        from news where news_id=#{newsId} and valid=1
     </select>
 
     <select id="selectNewsList" resultType="com.xupt.edu.zwy.platformofhoping.model.News"
@@ -42,4 +43,24 @@
         order by status desc ,update_time desc
     </select>
 
+    <insert id="addNews" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">
+        insert into news (news_id,news_name,news_description,news_content,news_creator,status,valid)
+        values (#{newsId},#{newsName},#{newsDescription},#{newsContent},#{newsCreator},10,1)
+    </insert>
+
+    <update id="updateNews" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">
+        update news
+        <set>
+            <if test="newsName !=null and newsName!=''">
+                news_name=#{newsName},
+            </if>
+            <if test="newsDescription !=null and newsDescription !=''">
+                news_description=#{newsDescription}
+            </if>
+            <if test="newsContent != null and newsContent !=''">
+                news_content=#{newsContent}
+            </if>
+        </set>
+        where news_id=#{newsId} and valid=1;
+    </update>
 </mapper>

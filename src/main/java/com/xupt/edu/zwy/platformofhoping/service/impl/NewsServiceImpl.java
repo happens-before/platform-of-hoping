@@ -1,21 +1,25 @@
 package com.xupt.edu.zwy.platformofhoping.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.ICommentDao;
 import com.xupt.edu.zwy.platformofhoping.dao.INewsDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IPictureDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IReplyDao;
+import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Comment;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -71,9 +75,44 @@ public class NewsServiceImpl implements INewsService {
     }
 
     @Override
-    public List<News> getNewsList(NewsListReq newsListReq) {
-        List<News> news = iNewsDao.selectNewsList(newsListReq);
-        return news;
+    public PageInfo<News> getNewsList(NewsListReq newsListReq) {
+        int pageNum = newsListReq.getPageNum();
+        PageHelper.startPage(pageNum, 10);
+        List<News> news = null;
+        if (newsListReq.getFindAll() == 1) {
+            news = iNewsDao.selectNewsList(newsListReq);
+        } else if (newsListReq.getFindAll() == 0) {
+            //todo 获取当前用户的姓名
+//            newsListReq.setNewsCreator();
+            news = iNewsDao.selectNewsList(newsListReq);
+        }
+        PageInfo<News> pageInfo = new PageInfo<>(news);
+        return pageInfo;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int addNews(NewsAddReq newsAddReq) {
+        try {
+            int result = iNewsDao.addNews(newsAddReq);
+            return result;
+        } catch (Exception e) {
+            log.error("新闻添加失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateNews(NewsAddReq newsAddReq) {
+        try {
+            int result = iNewsDao.updateNews(newsAddReq);
+            return result;
+        } catch (Exception e) {
+            log.error("新闻添加失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
 
 }
