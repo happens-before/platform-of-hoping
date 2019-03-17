@@ -21,9 +21,10 @@ public class User {
     private String profession;
     private String userSno;
     private String community;
-    private Boolean minister;
+    private Integer minister;
     private String userName;
     private String password;
+    private Boolean valid;
     private String sex;
     private Integer age;
     private String email;

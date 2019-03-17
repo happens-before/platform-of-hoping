@@ -11,7 +11,7 @@
         </encoder>
     </appender>
 
-    <property name="LOG_PATH" value="/home/www/logs"/>
+    <property name="LOG_PATH" value="/home/wanyuezhao/www/logs"/>
 
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

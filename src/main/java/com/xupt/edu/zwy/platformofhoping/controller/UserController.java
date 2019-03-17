@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA
@@ -38,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public CommonJsonResult login(UserLoginReq userLoginReq) {
-        if (!userService.isUser(userLoginReq)) {
+    public CommonJsonResult login(UserLoginReq userLoginReq, HttpServletResponse response) {
+        if (!userService.isRightInfo(userLoginReq,response)) {
             log.info("用户名或密码错误");
             throw new BusinessException(ReturnCodes.FAILD, "用户名或密码错误");
         }

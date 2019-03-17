@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao">
+    <sql id="Base_Column_List">
+      id,
+      organizer_id,
+      organizer_city,
+      organizer_name,
+      organizer_phone,
+      organizer_principal,
+      organizer_description,
+      valid,
+      password,
+      create_time,
+      update_time
+    </sql>
+
+    <select id="isRightOrganizer" resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer"
+            parameterType="com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq">
+        select * from where organizer_city=#{organizerCity} and organizer_name=#{organizerName}
+        and password=#{password} and valid=1;
+    </select>
+
+    <insert id="addOrganizer" parameterType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
+        insert into organizer (organizer_id,organizer_city,organizer_name,organizer_phone,
+        organizer_principal,organizer_description,password,valid)
+        values
+        (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},
+        #{organizerPrincipal},#{organizerDescription},#{password},1)
+    </insert>
+
+    <select id="isOrganizer" resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer"
+            parameterType="String">
+        select * from where organizer_name=#{organizerName} and valid=1;
+    </select>
+</mapper>

@@ -21,7 +21,8 @@ public class Organizer {
     private String organizerPhone;
     private String organizerprincipal;
     private String organizerDescription;
+    private Boolean valid;
+    private String password;
     private Date createTime;
     private Date updateTime;
-    private String password;
 }

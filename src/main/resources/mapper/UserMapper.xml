@@ -12,6 +12,7 @@
       minister,
       user_name,
       password,
+      valid,
       sex,
       age,
       email,
@@ -21,12 +22,17 @@
     </sql>
 
     <insert id="addUser" parameterType="com.xupt.edu.zwy.platformofhoping.model.User">
-        insert into user (user_id,school,college,profession,user_sno,community,minister,user_name,sex,age,email,phone)
-        values
-        (#{userId},#{school},#{college},#{profession},#{userSno},#{community},#{minister},#{userName},#{sex},#{age},#{email},#{phone});
+        insert into user (user_id,school,college,profession,user_sno,community,minister,user_name,sex,age,email,phone,password,valid) values
+        (#{userId},#{school},#{college},#{profession},#{userSno},#{community},#{minister},#{userName},#{sex},#{age},#{email},#{phone},#{password},1);
     </insert>
 
-    <select id="isUser" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+    <select id="isRightInfo" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.User">
         select * from user where school=#{school} and user_sno=#{userSno} and password=#{password} and valid=1;
+    </select>
+
+    <select id="isUser" parameterType="java.lang.String"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+        select * from user where user_name=#{userName} and valid=1;
     </select>
 </mapper>

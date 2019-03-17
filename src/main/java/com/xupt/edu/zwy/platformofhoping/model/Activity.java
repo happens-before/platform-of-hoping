@@ -21,9 +21,9 @@ public class Activity {
     private String activityTopic;
     private String activityContent;
     private Integer activityStatus;
+    private Boolean valid;
     private Date startTime;
     private Date endTime;
-    private Date publishTime;
     private Date createTime;
     private Date updateTime;
 }

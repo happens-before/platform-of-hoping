@@ -3,6 +3,9 @@ package com.xupt.edu.zwy.platformofhoping.service;
 import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA
  * Description:
@@ -13,5 +16,11 @@ import com.xupt.edu.zwy.platformofhoping.model.User;
  */
 public interface IUserService {
     int addUser(User user);
-    boolean isUser(UserLoginReq userLoginReq);
+
+    boolean isRightInfo(UserLoginReq userLoginReq,HttpServletResponse response);
+
+    /**
+     * 销毁所有cookie,用于退出登录
+     */
+    void destroyCookie(HttpServletResponse response);
 }
