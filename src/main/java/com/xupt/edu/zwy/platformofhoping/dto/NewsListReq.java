@@ -13,11 +13,6 @@ import lombok.Data;
 @Data
 public class NewsListReq {
     /**
-     * 是否查询所有
-     * findAll==0,则表示查询50条记录,findAll==1,则表示查询所有记录，相当于管理员查询
-     */
-    private int findAll;
-    /**
      * 当前的页码
      */
     private Integer pageNum;

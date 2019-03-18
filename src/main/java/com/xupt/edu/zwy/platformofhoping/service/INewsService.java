@@ -29,6 +29,8 @@ public interface INewsService {
 
     List<Reply> getReplyByCommentId(String commentId);
 
+    List<NewsDto> getTenLastNews();
+
     PageInfo<News> getNewsList(NewsListReq newsListReq);
 
     int addNews(NewsAddReq newsAddReq);

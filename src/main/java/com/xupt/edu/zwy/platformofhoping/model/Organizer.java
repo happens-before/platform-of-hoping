@@ -22,7 +22,7 @@ public class Organizer {
     private String organizerprincipal;
     private String organizerDescription;
     private String organizerAddress;
-    private Boolean valid;
+    private Integer valid;
     private String password;
     private Date createTime;
     private Date updateTime;

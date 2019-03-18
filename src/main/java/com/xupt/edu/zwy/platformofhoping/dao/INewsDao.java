@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Mapper
 public interface INewsDao {
-    List<NewsDto> selectLastFiveNewsId();
+    List<NewsDto> selectLastTenNews();
 
     News selectNewsInfoById(@Param("newsId") String newsId);
 

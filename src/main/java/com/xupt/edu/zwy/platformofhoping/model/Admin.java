@@ -17,7 +17,7 @@ public class Admin {
     private Integer id;
     private String adminId;
     private String adminName;
-    private Boolean valid;
+    private Integer valid;
     private Date createTime;
     private Date updateTime;
 }

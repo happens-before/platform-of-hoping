@@ -15,8 +15,8 @@
       update_time
     </sql>
 
-    <select id="selectLastFiveNewsId" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id from news where valid=1 and status=30 order by update_time desc news_count desc limit 1,5
+    <select id="selectLastTenNews" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
+        select news_id,news_name from news where valid=1 and status=30 order by update_time desc,news_count desc limit 0,9;
     </select>
 
     <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
@@ -26,20 +26,20 @@
 
     <select id="selectNewsList" resultType="com.xupt.edu.zwy.platformofhoping.model.News"
             parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsListReq">
-        select news_id,news_name,news_creator,status,news_count,update_time from news
+        select * from news
         <where>
-            valid=1
+            valid = 1
             <if test="newsName != null and newsName != ''">
                 and news_name like CONCAT('%',#{newsName}, '%')
             </if>
             <if test="newsCreator !=null and newsCreator != ''">
-                and news_creator=#{newsCreator}
+                and news_creator = #{newsCreator}
             </if>
-            <if test="status != 0">
-                and status=#{status}
+            <if test="status != 0 and status !=null">
+                and status = #{status}
             </if>
         </where>
-        order by status desc ,update_time desc
+        order by status desc,update_time desc
     </select>
 
     <insert id="addNews" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">

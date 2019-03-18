@@ -21,7 +21,7 @@ public class News {
     private String newsContent;
     private String newsCreator;
     private Integer status;
-    private Boolean valid;
+    private Integer valid;
     private Integer newsCount;
     private Date createTime;
     private Date updateTime;

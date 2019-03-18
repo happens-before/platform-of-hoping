@@ -24,7 +24,7 @@ public class User {
     private Integer minister;
     private String userName;
     private String password;
-    private Boolean valid;
+    private Integer valid;
     private String sex;
     private Integer age;
     private String email;

@@ -9,14 +9,8 @@
       create_time,
       update_time
     </sql>
-    <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto"
-            parameterType="java.util.List">
-        select picture_path,news_id from picture
-        where
-        news_id=
-        <foreach item="item" collection="list" separator=",">
-            (#{item.newsId})
-        </foreach>
+    <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto">
+        select picture_path,news_id from picture order by update_time desc limit 0,4;
     </select>
 
     <insert id="addPicture" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">

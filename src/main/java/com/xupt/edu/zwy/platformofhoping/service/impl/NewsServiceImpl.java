@@ -20,6 +20,7 @@ import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
+import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,48 +50,65 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     public List<NewsHomeDto> getNewsHome() {
-        List<NewsDto> newsDtos = iNewsDao.selectLastFiveNewsId();
-        log.info("newsId为:{}", newsDtos);
-
-        List<NewsHomeDto> newsHomeInfo = iPictureDao.getNewsHomeInfo(newsDtos);
-        log.info("homeInfo为:{}", newsHomeInfo);
-
-        return newsHomeInfo;
+        try {
+            List<NewsHomeDto> newsHomeInfo = iPictureDao.getNewsHomeInfo();
+            return newsHomeInfo;
+        } catch (Exception e) {
+            log.error("查询主页图片失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
     }
 
     @Override
     public NewsInfoDto getNewsInfoById(String newsId) {
-        NewsInfoDto newsInfoDto = new NewsInfoDto();
+        try {
+            NewsInfoDto newsInfoDto = new NewsInfoDto();
+            News news = iNewsDao.selectNewsInfoById(newsId);
+            List<Comment> comments = iCommentDao.selectCommentByNewsId(newsId);
+            newsInfoDto.setNewsInfoDto(news, comments);
+            return newsInfoDto;
+        } catch (Exception e) {
+            log.error("查询新闻详情失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
 
-        News news = iNewsDao.selectNewsInfoById(newsId);
-        List<Comment> comments = iCommentDao.selectCommentByNewsId(newsId);
-        newsInfoDto.setNewsInfoDto(news, comments);
-
-        log.info("newsInfo为: {}", newsInfoDto);
-        return newsInfoDto;
     }
 
     @Override
     public List<Reply> getReplyByCommentId(String commentId) {
-        List<Reply> replies = iReplyDao.selectReplyByCommentId(commentId);
+        try {
+            List<Reply> replies = iReplyDao.selectReplyByCommentId(commentId);
+            return replies;
+        } catch (Exception e) {
+            log.error("查询新闻追评信息失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
 
-        return replies;
+    }
+
+    @Override
+    public List<NewsDto> getTenLastNews() {
+        try {
+            List<NewsDto> news = iNewsDao.selectLastTenNews();
+            return news;
+        } catch (Exception e) {
+            log.error("查询最新10条新闻失败失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
     }
 
     @Override
     public PageInfo<News> getNewsList(NewsListReq newsListReq) {
-        int pageNum = newsListReq.getPageNum();
-        PageHelper.startPage(pageNum, 10);
-        List<News> news = null;
-        if (newsListReq.getFindAll() == 1) {
-            news = iNewsDao.selectNewsList(newsListReq);
-        } else if (newsListReq.getFindAll() == 0) {
-            //todo 获取当前用户的姓名
-//            newsListReq.setNewsCreator();
-            news = iNewsDao.selectNewsList(newsListReq);
+        PageHelper.startPage(newsListReq.getPageNum(), 10);
+        try {
+            List<News> news = iNewsDao.selectNewsList(newsListReq);
+            PageInfo<News> pageInfo = new PageInfo<>(news);
+            return pageInfo;
+        } catch (Exception e) {
+            log.error("新闻列表查询失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
-        PageInfo<News> pageInfo = new PageInfo<>(news);
-        return pageInfo;
+
     }
 
     @Override
@@ -117,7 +135,7 @@ public class NewsServiceImpl implements INewsService {
     @Transactional(rollbackFor = Exception.class)
     public int updateNews(NewsAddReq newsAddReq) {
         try {
-            if (newsAddReq.getPictureId()!=null) {
+            if (newsAddReq.getPictureId() != null) {
                 if ((iNewsDao.updateNews(newsAddReq)) == 1 && (iPictureDao.updatePicture(newsAddReq)) == 1) {
                     return 1;
                 } else {

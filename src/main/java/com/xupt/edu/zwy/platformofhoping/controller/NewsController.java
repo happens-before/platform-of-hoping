@@ -10,9 +10,12 @@ import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
+import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
+import com.xupt.edu.zwy.platformofhoping.enums.UserRoleEnum;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
+import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,12 +85,22 @@ public class NewsController {
         return CommonJsonResult.success(replies);
     }
 
+    @GetMapping("/listTenLastNews")
+    public CommonJsonResult<List<NewsDto>> newsTenLastList() {
+        log.info("into /news/listTenLastNews");
+        //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
+        List<NewsDto> tenLastNews = newsService.getTenLastNews();
+        System.out.println(tenLastNews);
+        log.info("out /news/listTenLastNews");
+        return CommonJsonResult.success(tenLastNews);
+    }
+
     @GetMapping("/list")
     public CommonJsonResult<PageInfo<News>> newsList(NewsListReq newsListReq) {
         log.info("into /news/list,newsListReq:{}", newsListReq);
         //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
         //todo  验证参数信息
-        CheckArgumentUtil.checkNewsListReq(newsListReq);
+       // CheckArgumentUtil.checkNewsListReq(newsListReq);
 
         //todo 若没有搜索条件，则找到最新的50条新闻记录，若有搜索条件则根据搜索条件进行查询新闻记录
         PageInfo<News> newsList = newsService.getNewsList(newsListReq);
@@ -96,7 +109,8 @@ public class NewsController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addNews(NewsAddReq newsAddReq, @RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+    public CommonJsonResult addNews(NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
+            file, HttpServletRequest request) throws IOException {
         log.info("into /news/add,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
 
@@ -125,7 +139,8 @@ public class NewsController {
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateNews(NewsAddReq newsAddReq,@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+    public CommonJsonResult updateNews(NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
+            file, HttpServletRequest request) throws IOException {
         log.info("into /news/update,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
 

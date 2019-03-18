@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface IPictureDao {
-    List<NewsHomeDto> getNewsHomeInfo(List<NewsDto> newsDtos);
+    List<NewsHomeDto> getNewsHomeInfo();
 
     int addPicture(NewsAddReq newsAddReq);
 

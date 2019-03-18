@@ -15,4 +15,5 @@ import java.util.Date;
 @Data
 public class NewsDto {
     private String newsId;
+    private String newsName;
 }
