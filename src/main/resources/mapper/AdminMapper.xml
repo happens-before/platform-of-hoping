@@ -31,4 +31,15 @@
     <update id="addAdminWithSign" parameterType="com.xupt.edu.zwy.platformofhoping.dto.AdminReq">
         update admin set valid =1 where admin_name=#{adminName};
     </update>
+
+    <select id="selectAdminList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.AdminReq" resultType="com.xupt.edu.zwy.platformofhoping.model.Admin">
+        select * from admin
+        <where>
+            valid=1
+            <if test="adminName!=null and adminName!=''">
+                and admin_name=#{adminName}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
 </mapper>

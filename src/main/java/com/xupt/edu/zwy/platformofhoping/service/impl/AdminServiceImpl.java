@@ -1,11 +1,14 @@
 package com.xupt.edu.zwy.platformofhoping.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IUserDao;
 import com.xupt.edu.zwy.platformofhoping.dto.AdminReq;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Admin;
+import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.service.IAdminService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -63,6 +67,20 @@ public class AdminServiceImpl implements IAdminService {
             }
         } catch (Exception e) {
             log.error("管理员添加失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public PageInfo<Admin> selectAdminList(AdminReq adminReq) {
+        PageHelper.startPage(adminReq.getPageNum(), 10);
+        try
+        {
+            List<Admin> admins = iAdminDao.selectAdminList(adminReq);
+            PageInfo<Admin> pageInfo= new PageInfo<>(admins);
+            return pageInfo;
+        }catch (Exception e) {
+            log.error("查询管理员列表失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }

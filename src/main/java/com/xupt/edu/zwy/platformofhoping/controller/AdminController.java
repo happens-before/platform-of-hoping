@@ -2,6 +2,7 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
 import com.xupt.edu.zwy.platformofhoping.dto.AdminReq;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.model.Admin;
 import com.xupt.edu.zwy.platformofhoping.service.IAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,14 +39,17 @@ public class AdminController {
 
     @PostMapping("/delete")
     public CommonJsonResult deleteAdmin(AdminReq adminReq) {
-        log.info("into /admin/delete,adminReq:{}",adminReq);
+        log.info("into /admin/delete,adminReq:{}", adminReq);
         int result = adminService.deleteAdmin(adminReq);
         log.info("out /admin/delete,result:{}", result);
         return CommonJsonResult.success();
     }
 
     @GetMapping("/list")
-    public CommonJsonResult<Admin> adminList() {
-        return null;
+    public CommonJsonResult<PageInfo<Admin>> adminList(AdminReq adminReq) {
+        log.info("into /admin/list,adminReq:{}", adminReq);
+        PageInfo<Admin> adminPageInfo = adminService.selectAdminList(adminReq);
+        log.info("out /admin/list,adminPageInfo:{}", adminPageInfo);
+        return CommonJsonResult.success(adminPageInfo);
     }
 }

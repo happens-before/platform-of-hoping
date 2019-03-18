@@ -12,6 +12,12 @@ import lombok.Data;
  */
 @Data
 public class AdminReq {
-    private String AdminId;
+    /**
+     * 当前的页码
+     */
+    private Integer pageNum;
+    private String adminId;
     private String adminName;
+
+
 }

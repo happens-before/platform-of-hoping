@@ -5,6 +5,8 @@ import com.xupt.edu.zwy.platformofhoping.model.Admin;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author wanyuezhao
  */
@@ -19,4 +21,6 @@ public interface IAdminDao {
     int deleteAdmin(AdminReq adminReq);
 
     Admin isEverAdmin(AdminReq adminReq);
+
+    List<Admin> selectAdminList(AdminReq adminReq);
 }
