@@ -100,7 +100,7 @@ public class NewsController {
         log.info("into /news/list,newsListReq:{}", newsListReq);
         //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
         //todo  验证参数信息
-       // CheckArgumentUtil.checkNewsListReq(newsListReq);
+        // CheckArgumentUtil.checkNewsListReq(newsListReq);
 
         //todo 若没有搜索条件，则找到最新的50条新闻记录，若有搜索条件则根据搜索条件进行查询新闻记录
         PageInfo<News> newsList = newsService.getNewsList(newsListReq);
@@ -204,6 +204,18 @@ public class NewsController {
         log.info("into /news/addReply,replyReq:{}", replyReq);
         int result = newsService.addReply(replyReq);
         log.info("out /news/addReply,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/pause")
+    public CommonJsonResult pauseNews(NewsAddReq newsAddReq) {
+        log.info("into /news/pause,newsAddReq:{}", newsAddReq);
+        //todo 检查参数合法性
+
+        //todo 验证身份
+
+        int result = newsService.pauseNews(newsAddReq);
+        log.info("out /news/pause,result:{}", result);
         return CommonJsonResult.success();
     }
 }

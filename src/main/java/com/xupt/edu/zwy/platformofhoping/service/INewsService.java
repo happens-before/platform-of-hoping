@@ -44,4 +44,6 @@ public interface INewsService {
     int addComment(CommentReq commentReq);
 
     int addReply(ReplyReq replyReq);
+
+    int pauseNews(NewsAddReq newsAddReq);
 }

@@ -200,5 +200,18 @@ public class NewsServiceImpl implements INewsService {
         }
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int pauseNews(NewsAddReq newsAddReq) {
+        try {
+            newsAddReq.setStatus(20);
+            int result = iNewsDao.updateNews(newsAddReq);
+            return result;
+        } catch (Exception e) {
+            log.error("新闻暂停失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
 
 }

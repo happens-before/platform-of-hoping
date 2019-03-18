@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xupt.edu.zwy.platformofhoping.dao.IActivityDao">
+    <sql id="Base_Column_List">
+      id,
+      activity_id,
+      promoter,
+      organizer,
+      activity_topic,
+      activity_content,
+      activity_status,
+      valid,
+      start_time,
+      end_time,
+      create_time,
+      update_time
+    </sql>
+
+    <insert id="addActivity" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ActivityReq">
+      insert into activity (activity_id,promoter,organizer,activity_topic,activity_content,activity_status,valid,start_time,end_time)
+      values
+      (#{activityId},#{promoter},#{organizer},#{activityTopic},#{activityContent},20,1,#{startTime},#{endTime});
+    </insert>
+
+    <select id="selectActivityById" parameterType="java.lang.String"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
+        select * from activity where activity_id=#{activityId} and valid=1;
+    </select>
+
+    <update id="updateActivity" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ActivityReq">
+        update activity
+        <set>
+            <if test="promoter!=null and promoter!=''">
+                promoter=#{promoter},
+            </if>
+            <if test="organizer!=null and organizer!=''">
+                organizer=#{organizer},
+            </if>
+            <if test="activityTopic!=null and activityTopic!=''">
+                activity_topic=#{activityTopic},
+            </if>
+            <if test="activityContent!=null and activityContent!=''">
+                activity_content=#{activityContent},
+            </if>
+            <if test="activityStatus !=null and activityStatus!=''">
+                activity_status=#{activityStatus},
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                start_time=#{startTime},
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                end_time=#{endTime}
+            </if>
+        </set>
+        where activity_id=#{activityId} and valid=1;
+    </update>
+
+    <update id="deleteActivity" parameterType="java.lang.String">
+        update activity set valid=0 where activity_id=#{activityId};
+    </update>
+
+    <select id="selectActivityList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
+        select * from activity
+        <where>
+            valid=1
+            <if test="promoter！=null and promoter!=''">
+                and promoter=#{promoter}
+            </if>
+            <if test="organizer!=null and organizer!=''">
+                and organizer=#{organizer}
+            </if>
+            <if test="activityTopic!=null and activityTopic!=''">
+                and activity_topic=#{activityTopic}
+            </if>
+            <if test="activityStatus!=null and activityStatus!=0">
+                and activity_status=#{activityStatus}
+            </if>
+            <if test="startTime!=null and endTime!=null and startTime!='' and endTime!=''">
+                <![CDATA[  and DATE_FORMAT(start_time, '%Y-%m-%d') <= DATE_FORMAT(#{startTime}, '%Y-%m-%d')
+                           and DATE_FORMAT(end_time, '%Y-%m-%d') >= DATE_FORMAT(#{endTime}, '%Y-%m-%d')   ]]>
+            </if>
+        </where>
+        order by update_time desc,activity_status desc
+    </select>
+</mapper>

@@ -1,7 +1,9 @@
 package com.xupt.edu.zwy.platformofhoping.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -21,9 +23,11 @@ public class Activity {
     private String activityTopic;
     private String activityContent;
     private Integer activityStatus;
-    private Boolean valid;
-    private Date startTime;
-    private Date endTime;
+    private Integer valid;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp startTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Timestamp endTime;
     private Date createTime;
     private Date updateTime;
 }
