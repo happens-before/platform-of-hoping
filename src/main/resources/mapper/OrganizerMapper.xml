@@ -12,22 +12,20 @@
       valid,
       password,
       create_time,
-      update_time
+      update_time,
+      organizer_address
     </sql>
+
+    <insert id="addOrganizer" parameterType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
+        insert into organizer (organizer_id,organizer_city,organizer_name,organizer_phone,organizer_principal,organizer_description,password,valid,organizer_address) values
+        (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},#{organizerPrincipal},#{organizerDescription},#{password},1,#{organizerAddress});
+    </insert>
 
     <select id="isRightOrganizer" resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer"
             parameterType="com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq">
         select * from where organizer_city=#{organizerCity} and organizer_name=#{organizerName}
         and password=#{password} and valid=1;
     </select>
-
-    <insert id="addOrganizer" parameterType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
-        insert into organizer (organizer_id,organizer_city,organizer_name,organizer_phone,
-        organizer_principal,organizer_description,password,valid)
-        values
-        (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},
-        #{organizerPrincipal},#{organizerDescription},#{password},1)
-    </insert>
 
     <select id="isOrganizer" resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer"
             parameterType="String">

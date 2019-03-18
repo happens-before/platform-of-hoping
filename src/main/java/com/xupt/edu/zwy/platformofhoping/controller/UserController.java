@@ -7,10 +7,10 @@ import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import com.xupt.edu.zwy.platformofhoping.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 19-3-16
  * @Time 下午9:02
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 @Slf4j
 public class UserController {

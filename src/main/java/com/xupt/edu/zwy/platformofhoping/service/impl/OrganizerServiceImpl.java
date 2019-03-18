@@ -42,6 +42,7 @@ public class OrganizerServiceImpl implements IOrganizerService {
     public int registerOrganizer(Organizer organizer) {
         try {
             organizer.setOrganizerId(CommonUtils.getUUId32());
+            System.out.println(organizer);
             int result = iOrganizerDao.addOrganizer(organizer);
             return result;
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**

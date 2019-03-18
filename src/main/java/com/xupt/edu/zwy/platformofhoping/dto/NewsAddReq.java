@@ -20,4 +20,6 @@ public class NewsAddReq {
     private String newsContent;
     private String newsCreator;
     private Integer status;
+    private String pictureId;
+    private String picturePath;
 }

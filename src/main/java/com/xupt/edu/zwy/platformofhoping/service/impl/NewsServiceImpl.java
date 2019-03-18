@@ -98,8 +98,15 @@ public class NewsServiceImpl implements INewsService {
     public int addNews(NewsAddReq newsAddReq) {
         try {
             newsAddReq.setNewsId(CommonUtils.getUUId32());
-            int result = iNewsDao.addNews(newsAddReq);
-            return result;
+            if (newsAddReq.getPicturePath() != null) {
+                newsAddReq.setPictureId(CommonUtils.getUUId32());
+                if ((iNewsDao.addNews(newsAddReq)) == 1 && (iPictureDao.addPicture(newsAddReq)) == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            return iNewsDao.addNews(newsAddReq);
         } catch (Exception e) {
             log.error("新闻添加失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -110,8 +117,14 @@ public class NewsServiceImpl implements INewsService {
     @Transactional(rollbackFor = Exception.class)
     public int updateNews(NewsAddReq newsAddReq) {
         try {
-            int result = iNewsDao.updateNews(newsAddReq);
-            return result;
+            if (newsAddReq.getPictureId()!=null) {
+                if ((iNewsDao.updateNews(newsAddReq)) == 1 && (iPictureDao.updatePicture(newsAddReq)) == 1) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            return iNewsDao.updateNews(newsAddReq);
         } catch (Exception e) {
             log.error("新闻更新失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -150,7 +163,7 @@ public class NewsServiceImpl implements INewsService {
             commentReq.setCommentId(CommonUtils.getUUId32());
             int result = iCommentDao.addComment(commentReq);
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("评论添加失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
@@ -163,10 +176,11 @@ public class NewsServiceImpl implements INewsService {
             replyReq.setReplyId(CommonUtils.getUUId32());
             int result = iReplyDao.addReply(replyReq);
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("评论添加失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }
+
 
 }

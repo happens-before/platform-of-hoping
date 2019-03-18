@@ -9,14 +9,31 @@
       create_time,
       update_time
     </sql>
-    <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto" parameterType="java.util.List">
+    <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto"
+            parameterType="java.util.List">
         select picture_path,news_id from picture
         where
         news_id=
         <foreach item="item" collection="list" separator=",">
-        (#{item.newsId})
+            (#{item.newsId})
         </foreach>
     </select>
 
+    <insert id="addPicture" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">
+        insert into picture (picture_id,news_id,picture_path) values (#{pictureId},#{newsId},#{picturePath});
+    </insert>
+
+    <update id="updatePicture" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">
+        update picture
+        <set>
+            <if test="newsId !=null and newsId != ''">
+                news_id=#{newsId},
+            </if>
+            <if test="picturePath !=null and picturePath != ''">
+                picture_path=#{picturePath}
+            </if>
+        </set>
+        where picture_id=#{pictureId}
+    </update>
 
 </mapper>
