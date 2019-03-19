@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA
@@ -31,9 +32,9 @@ public class OrganizerController {
     private IOrganizerService organizerService;
 
     @GetMapping("/login")
-    public CommonJsonResult organizerLogin(OrganizerReq organizerReq) {
+    public CommonJsonResult organizerLogin(OrganizerReq organizerReq, HttpServletResponse response) {
         log.info("into /organizer/login,organizerReq:{}", organizerReq);
-        if (!organizerService.isRightOrganizer(organizerReq)) {
+        if (!organizerService.isRightInfo(organizerReq,response)) {
             throw new BusinessException(ReturnCodes.FAILD, "组织名或密码错误，请重试");
         }
         log.info("out /organizer/login");

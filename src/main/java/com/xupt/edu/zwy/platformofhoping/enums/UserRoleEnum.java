@@ -9,9 +9,9 @@ package com.xupt.edu.zwy.platformofhoping.enums;
  * @Time 下午9:34
  */
 public enum UserRoleEnum {
-    ADMIN("管理员", 2),
-    USER("用户", 1),
-    ORGANIZER("组织", 0);
+    ADMIN("管理员", 3),
+    USER("用户", 2),
+    ORGANIZER("组织", 1);
 
 
     private String role;

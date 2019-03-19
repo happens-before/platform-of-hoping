@@ -109,6 +109,7 @@ public class ActivityServiceImpl implements IActivityService {
     public PageInfo<Activity> selectActivityList(ActivityListReq activityListReq) {
         PageHelper.startPage(activityListReq.getPageNum(), 10);
         try {
+            System.out.println(activityListReq);
             List<Activity> activities = iActivityDao.selectActivityList(activityListReq);
             PageInfo<Activity> pageInfo = new PageInfo<>(activities);
             return pageInfo;

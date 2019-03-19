@@ -1,9 +1,14 @@
 package com.xupt.edu.zwy.platformofhoping.service.impl;
 
+import com.google.common.base.Optional;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
+import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
 import com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq;
+import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
+import com.xupt.edu.zwy.platformofhoping.enums.UserRoleEnum;
+import com.xupt.edu.zwy.platformofhoping.model.Admin;
 import com.xupt.edu.zwy.platformofhoping.model.Organizer;
 import com.xupt.edu.zwy.platformofhoping.service.IOrganizerService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
@@ -13,6 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -25,17 +34,18 @@ import javax.annotation.Resource;
 @Service
 @Slf4j
 public class OrganizerServiceImpl implements IOrganizerService {
+    public static final String COOKIE_USERID = "platform_userId";
+
+    public static final String COOKIE_IDENTITY = "platform_identity";
+
+    public static final String COOKIE_NAME = "platform_name";
+
+    public static final String COOKIE_TIME = "platform_time";
+
     @Resource
     private IOrganizerDao iOrganizerDao;
-
-    @Override
-    public boolean isRightOrganizer(OrganizerReq organizerReq) {
-        Organizer organizer = iOrganizerDao.isRightOrganizer(organizerReq);
-        if (StringUtils.isBlank(organizer.getOrganizerId())) {
-            return false;
-        }
-        return true;
-    }
+    @Resource
+    private IAdminDao iAdminDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -49,5 +59,53 @@ public class OrganizerServiceImpl implements IOrganizerService {
             log.error("组织添加失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
+    }
+
+
+    @Override
+    public boolean isRightInfo(OrganizerReq organizerReq, HttpServletResponse response) {
+        Organizer rightOrganizer = iOrganizerDao.isRightOrganizer(organizerReq);
+        if (StringUtils.isBlank(rightOrganizer.getOrganizerId())) {
+            return false;
+        }
+        setCookie(rightOrganizer, response);
+        return true;
+    }
+
+    private boolean setCookie(Organizer organizer, HttpServletResponse response) {
+        try {
+            Optional<Organizer> optionalUser = Optional.fromNullable(organizer);
+            int identity = getUserIdentityByName(organizer.getOrganizerName());
+            if (!optionalUser.isPresent()) {
+                log.error("获得的用户为空");
+            } else {
+                Date now = new Date();
+                String cookieUserId = new StringBuilder(COOKIE_USERID).append("=").append(organizer.getOrganizerId()).append(";Path=/;Max-Age=43200").toString();
+                String cookieIdentity = new StringBuilder(COOKIE_IDENTITY).append("=").append(identity).append(";Path=/;Max-Age=43200").toString();
+                String cookieName = new StringBuilder(COOKIE_NAME).append("=").append(URLEncoder.encode(organizer.getOrganizerName(), "UTF-8")).append(";Path=/;Max-Age=43200").toString();
+                String cookieTime = new StringBuilder(COOKIE_TIME).append("=").append(now).append(";Path=/;Max-Age=43200").toString();
+                response.addHeader("Set-Cookie", cookieUserId);
+                response.addHeader("Set-Cookie", cookieIdentity);
+                response.addHeader("Set-Cookie", cookieName);
+                response.addHeader("Set-Cookie", cookieTime);
+                log.info("cookie设置信息：platform_userId：{} platform_identity：{} platform_name：{} platform_time：{} ", organizer.getOrganizerId(), identity, organizer.getOrganizerName(), now);
+                return true;
+            }
+        } catch (BusinessException e) {
+            log.error("登录异常 {}", e);
+        } catch (UnsupportedEncodingException e) {
+            log.error("organizername编码失败{} ", e);
+        }
+        return false;
+    }
+
+    private int getUserIdentityByName(String orgainzerName) {
+        Organizer organizer = iOrganizerDao.isOrganizer(orgainzerName);
+        Optional<Organizer> optionalOrganizer = Optional.fromNullable(organizer);
+        if (optionalOrganizer.isPresent()) {
+            return UserRoleEnum.ORGANIZER.getRoleFlag();
+        }
+        return 0;
+
     }
 }
