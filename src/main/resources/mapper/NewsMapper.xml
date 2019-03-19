@@ -69,4 +69,8 @@
     <update id="deleteNews" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
         update news set valid=0 where news_id=newsId;
     </update>
+
+    <update id="addCountNews" parameterType="java.lang.String">
+        update news set news_count=news_count+1 where news_id=#{newsId} and valid=1;
+    </update>
 </mapper>

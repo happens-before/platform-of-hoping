@@ -64,6 +64,7 @@ public class NewsServiceImpl implements INewsService {
         try {
             NewsInfoDto newsInfoDto = new NewsInfoDto();
             News news = iNewsDao.selectNewsInfoById(newsId);
+            iNewsDao.addCountNews(newsId);
             List<Comment> comments = iCommentDao.selectCommentByNewsId(newsId);
             newsInfoDto.setNewsInfoDto(news, comments);
             return newsInfoDto;

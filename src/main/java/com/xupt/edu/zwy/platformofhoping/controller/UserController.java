@@ -7,6 +7,7 @@ import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import com.xupt.edu.zwy.platformofhoping.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +39,9 @@ public class UserController {
         return CommonJsonResult.success();
     }
 
-    @GetMapping("/login")
+    @GetMapping(value = "/login")
     public CommonJsonResult login(UserLoginReq userLoginReq, HttpServletResponse response) {
-        if (!userService.isRightInfo(userLoginReq,response)) {
+        if (!userService.isRightInfo(userLoginReq, response)) {
             log.info("用户名或密码错误");
             throw new BusinessException(ReturnCodes.FAILD, "用户名或密码错误");
         }

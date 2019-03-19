@@ -25,4 +25,6 @@ public interface INewsDao {
     int updateNews(NewsAddReq newsAddReq);
 
     int deleteNews(NewsDto newsDto);
+
+    int addCountNews(@Param("newsId") String newsId);
 }
