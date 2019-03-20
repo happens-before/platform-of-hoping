@@ -28,7 +28,7 @@ public class OrganizerServiceImplTest {
         organizer.setOrganizerName("西安市长安区聂河养老院");
         organizer.setOrganizerAddress("西安市长安区黄良街道办聂河中医医院");
         organizer.setOrganizerDescription("聂河养老院地处西安市长安区黄良街办街办聂家河村，占地面积十余亩，建筑面积3500余平方米，是一家医养康结合型的养老院；我们养老院一共有100张床位，设有双人间、三人间和多人间。");
-        organizer.setOrganizerprincipal("陈永森");
+        organizer.setOrganizerPrincipal("陈永森");
         organizer.setOrganizerPhone("400-6090-872转15#");
         organizer.setPassword("niehe");
         int result = organizerService.registerOrganizer(organizer);

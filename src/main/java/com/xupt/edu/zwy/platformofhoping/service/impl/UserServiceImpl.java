@@ -84,12 +84,19 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean isRightInfo(UserLoginReq userLoginReq, HttpServletResponse response) {
-        User user = iUserDao.isRightInfo(userLoginReq);
-        if (StringUtils.isBlank(user.getUserId())) {
-            return false;
+        try {
+            User user = iUserDao.isRightInfo(userLoginReq);
+            System.out.println(user);
+            if (user == null) {
+                return false;
+            }
+            setCookie(user, response);
+            return true;
+        } catch (Exception e) {
+            log.error("用户登陆失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
-        setCookie(user, response);
-        return true;
+
     }
 
     private boolean setCookie(User user, HttpServletResponse response) {

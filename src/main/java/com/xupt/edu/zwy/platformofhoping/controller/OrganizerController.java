@@ -7,9 +7,9 @@ import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Organizer;
 import com.xupt.edu.zwy.platformofhoping.service.IOrganizerService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,15 +34,15 @@ public class OrganizerController {
     @GetMapping("/login")
     public CommonJsonResult organizerLogin(OrganizerReq organizerReq, HttpServletResponse response) {
         log.info("into /organizer/login,organizerReq:{}", organizerReq);
-        if (!organizerService.isRightInfo(organizerReq,response)) {
-            throw new BusinessException(ReturnCodes.FAILD, "组织名或密码错误，请重试");
+        if((!organizerService.isRightInfo(organizerReq, response))){
+            return CommonJsonResult.fail(ReturnCodes.FAILD,"组织名或密码错误");
         }
         log.info("out /organizer/login");
         return CommonJsonResult.success();
     }
 
     @PostMapping("/register")
-    public CommonJsonResult orgainzerRegister(Organizer organizer) {
+    public CommonJsonResult orgainzerRegister(@RequestBody Organizer organizer) {
         log.info("into /organizer/register,organizer:{}", organizer);
         int result = organizerService.registerOrganizer(organizer);
         log.info("out /organizer/register,result:{}", result);

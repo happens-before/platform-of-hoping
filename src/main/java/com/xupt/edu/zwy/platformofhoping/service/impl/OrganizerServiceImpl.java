@@ -64,12 +64,17 @@ public class OrganizerServiceImpl implements IOrganizerService {
 
     @Override
     public boolean isRightInfo(OrganizerReq organizerReq, HttpServletResponse response) {
-        Organizer rightOrganizer = iOrganizerDao.isRightOrganizer(organizerReq);
-        if (StringUtils.isBlank(rightOrganizer.getOrganizerId())) {
-            return false;
+        try {
+            Organizer rightOrganizer = iOrganizerDao.isRightOrganizer(organizerReq);
+            if (rightOrganizer == null) {
+                return false;
+            }
+            setCookie(rightOrganizer, response);
+            return true;
+        } catch (Exception e) {
+            log.error("组织登陆失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
-        setCookie(rightOrganizer, response);
-        return true;
     }
 
     private boolean setCookie(Organizer organizer, HttpServletResponse response) {

@@ -41,10 +41,11 @@ public class UserController {
 
     @GetMapping(value = "/login")
     public CommonJsonResult login(UserLoginReq userLoginReq, HttpServletResponse response) {
-        if (!userService.isRightInfo(userLoginReq, response)) {
-            log.info("用户名或密码错误");
-            throw new BusinessException(ReturnCodes.FAILD, "用户名或密码错误");
+        log.info("into /user/login,userLoginReq:{}", userLoginReq);
+        if((!userService.isRightInfo(userLoginReq, response))){
+            return CommonJsonResult.fail(ReturnCodes.FAILD,"用户名或密码错误");
         }
+        log.info("out /user/login");
         return CommonJsonResult.success();
     }
 }

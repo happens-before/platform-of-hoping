@@ -19,7 +19,7 @@ public class Organizer {
     private String organizerCity;
     private String organizerName;
     private String organizerPhone;
-    private String organizerprincipal;
+    private String organizerPrincipal;
     private String organizerDescription;
     private String organizerAddress;
     private Integer valid;

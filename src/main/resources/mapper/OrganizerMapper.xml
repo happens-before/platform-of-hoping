@@ -31,6 +31,6 @@
         insert into organizer 
         (organizer_id,organizer_city,organizer_name,organizer_phone,organizer_principal,organizer_description,valid,password,organizer_address)
         values
-        (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},#{organizerprincipal},#{organizerDescription},1,#{password},#{organizerAddress})
+        (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},#{organizerPrincipal},#{organizerDescription},1,#{password},#{organizerAddress})
     </insert>
 </mapper>
