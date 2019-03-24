@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class AdminController {
     private IAdminService adminService;
 
     @PostMapping("/add")
-    public CommonJsonResult addAdmin(AdminReq adminReq) {
+    public CommonJsonResult addAdmin(@RequestBody AdminReq adminReq) {
         log.info("into /admin/add,adminReq:{}", adminReq);
         int result = adminService.addAdmin(adminReq);
         log.info("out /admin/add,result:{}", result);
@@ -38,7 +39,7 @@ public class AdminController {
     }
 
     @PostMapping("/delete")
-    public CommonJsonResult deleteAdmin(AdminReq adminReq) {
+    public CommonJsonResult deleteAdmin(@RequestBody AdminReq adminReq) {
         log.info("into /admin/delete,adminReq:{}", adminReq);
         int result = adminService.deleteAdmin(adminReq);
         log.info("out /admin/delete,result:{}", result);

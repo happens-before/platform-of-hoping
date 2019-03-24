@@ -19,6 +19,7 @@ import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -109,7 +110,7 @@ public class NewsController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addNews(NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
+    public CommonJsonResult addNews(@RequestBody NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
             file, HttpServletRequest request) throws IOException {
         log.info("into /news/add,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
@@ -139,7 +140,7 @@ public class NewsController {
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateNews(NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
+    public CommonJsonResult updateNews(@RequestBody NewsAddReq newsAddReq, @RequestParam("file") MultipartFile
             file, HttpServletRequest request) throws IOException {
         log.info("into /news/update,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
@@ -168,7 +169,7 @@ public class NewsController {
     }
 
     @PostMapping("/publish")
-    public CommonJsonResult publishNews(NewsAddReq newsAddReq) {
+    public CommonJsonResult publishNews(@RequestBody NewsAddReq newsAddReq) {
         log.info("into /news/publish,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
 
@@ -180,7 +181,7 @@ public class NewsController {
     }
 
     @PostMapping("/delete")
-    public CommonJsonResult deleteNews(NewsDto newsDto) {
+    public CommonJsonResult deleteNews(@RequestBody NewsDto newsDto) {
         log.info("into /news/delete,newsDto:{}", newsDto);
         //todo 检查参数合法性
 
@@ -192,7 +193,7 @@ public class NewsController {
     }
 
     @PostMapping("/addComment")
-    public CommonJsonResult addComment(CommentReq commentReq) {
+    public CommonJsonResult addComment(@RequestBody CommentReq commentReq) {
         log.info("into /news/addComment,commentReq:{}", commentReq);
         int result = newsService.addComment(commentReq);
         log.info("out /news/addComment,result:{}", result);
@@ -200,7 +201,7 @@ public class NewsController {
     }
 
     @PostMapping("/addReply")
-    public CommonJsonResult addReply(ReplyReq replyReq) {
+    public CommonJsonResult addReply(@RequestBody ReplyReq replyReq) {
         log.info("into /news/addReply,replyReq:{}", replyReq);
         int result = newsService.addReply(replyReq);
         log.info("out /news/addReply,result:{}", result);
@@ -208,7 +209,7 @@ public class NewsController {
     }
 
     @PostMapping("/pause")
-    public CommonJsonResult pauseNews(NewsAddReq newsAddReq) {
+    public CommonJsonResult pauseNews(@RequestBody NewsAddReq newsAddReq) {
         log.info("into /news/pause,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
 

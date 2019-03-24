@@ -7,9 +7,9 @@ import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import com.xupt.edu.zwy.platformofhoping.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +33,7 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("/register")
-    public CommonJsonResult registerUser(User user) {
+    public CommonJsonResult registerUser(@RequestBody User user) {
         log.info("into /user/register,user:{}", user);
         int result = userService.addUser(user);
         log.info("out /user/register,result:{}", result);

@@ -13,6 +13,7 @@ import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +57,7 @@ public class ActivityController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addActivity(ActivityReq activityReq) {
+    public CommonJsonResult addActivity(@RequestBody ActivityReq activityReq) {
         log.info("into /activity/add,activityReq:{}", activityReq);
         int result = activityService.addActivity(activityReq);
         log.info("out activity/add,result:{}", result);
@@ -72,7 +73,7 @@ public class ActivityController {
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateActivity(ActivityReq activityReq) {
+    public CommonJsonResult updateActivity(@RequestBody ActivityReq activityReq) {
         log.info("into /activity/update,activityReq:{}", activityReq);
         int result = activityService.updateActivity(activityReq);
         log.info("out activity/update,result:{}", result);
@@ -88,7 +89,7 @@ public class ActivityController {
     }
 
     @PostMapping("/publish")
-    public CommonJsonResult publishActivity(ActivityReq activityReq) {
+    public CommonJsonResult publishActivity(@RequestBody ActivityReq activityReq) {
         log.info("into /activity/publish,activityReq:{}", activityReq);
         int result = activityService.publishActivity(activityReq);
         log.info("out activity/publish,result:{}", result);
@@ -96,7 +97,7 @@ public class ActivityController {
     }
 
     @PostMapping("/end")
-    public CommonJsonResult endActivity(ActivityReq activityReq) {
+    public CommonJsonResult endActivity(@RequestBody ActivityReq activityReq) {
         log.info("into /activity/end,activityReq:{}", activityReq);
         int result = activityService.endActivity(activityReq);
         log.info("out activity/end,result:{}", result);
