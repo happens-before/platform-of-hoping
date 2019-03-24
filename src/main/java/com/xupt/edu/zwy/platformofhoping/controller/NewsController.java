@@ -55,7 +55,7 @@ public class NewsController {
         //从数据库取数据
         List<NewsHomeDto> newsHome = newsService.getNewsHome();
 
-        log.info("out /news/home");
+        log.info("out /news/home,newsHome:{}",newsHome);
         return CommonJsonResult.success(newsHome);
     }
 
@@ -117,7 +117,7 @@ public class NewsController {
         //todo 验证身份
 
         //上传文件
-        String path = "/home/wanyuezhao/spring/picture/";
+        String path = "/home/wanyuezhao/spring/platform-of-hoping-fe/pictures/";
         //创建文件
         File dir = new File(path);
         if (!dir.exists()) {
@@ -218,5 +218,7 @@ public class NewsController {
         log.info("out /news/pause,result:{}", result);
         return CommonJsonResult.success();
     }
+
+
 }
 

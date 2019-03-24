@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -42,10 +43,26 @@ public class UserController {
     @GetMapping(value = "/login")
     public CommonJsonResult login(UserLoginReq userLoginReq, HttpServletResponse response) {
         log.info("into /user/login,userLoginReq:{}", userLoginReq);
-        if((!userService.isRightInfo(userLoginReq, response))){
-            return CommonJsonResult.fail(ReturnCodes.FAILD,"用户名或密码错误");
+        if ((!userService.isRightInfo(userLoginReq, response))) {
+            return CommonJsonResult.fail(ReturnCodes.FAILD, "用户名或密码错误");
         }
         log.info("out /user/login");
         return CommonJsonResult.success();
+    }
+
+    @GetMapping("/destory")
+    public CommonJsonResult destory(HttpServletResponse response) {
+        log.info("into user/destory");
+        userService.destroyCookie(response);
+        log.info("out /user/destory");
+        return CommonJsonResult.success();
+    }
+
+    @GetMapping("/info")
+    public CommonJsonResult<User> userInfo(@RequestParam("userId") String userId) {
+        log.info("into user/info,userId:{}",userId);
+        User user = userService.selectUserInfoById(userId);
+        log.info("out /user/info,user:{}",user);
+        return CommonJsonResult.success(user);
     }
 }

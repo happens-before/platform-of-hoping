@@ -23,4 +23,6 @@ public interface IUserService {
      * 销毁所有cookie,用于退出登录
      */
     void destroyCookie(HttpServletResponse response);
+
+    User selectUserInfoById(String userId);
 }

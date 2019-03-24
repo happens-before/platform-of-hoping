@@ -35,4 +35,8 @@
             resultType="com.xupt.edu.zwy.platformofhoping.model.User">
         select * from user where user_name=#{userName} and valid=1;
     </select>
+
+    <select id="selectUserByUserId" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+        select * from user where user_id=#{userId} and valid=1;
+    </select>
 </mapper>

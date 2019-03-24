@@ -38,13 +38,14 @@ public class ActivityController {
     public CommonJsonResult<PageInfo<Activity>> selectActivityList(ActivityListReq activityListReq) {
         log.info("into /activity/list,activityListReq:{}", activityListReq);
         int identity = Integer.parseInt(RequestUtil.getLoginUserStringIdentity());
-        if (identity == UserRoleEnum.ADMIN.getRoleFlag()) {
-            activityListReq.setFindAll(1);
-        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()) {
-            activityListReq.setFindAll(0);
+        System.out.println(identity);
+        System.out.println(UserRoleEnum.ADMIN.getRoleFlag());
+        if (activityListReq.getFindAll()==1 && identity==UserRoleEnum.ADMIN.getRoleFlag()) {
+            activityListReq.setPromoter("");
+            activityListReq.setOrganizer("");
+        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()&& activityListReq.getFindAll()==0 ){
             activityListReq.setOrganizer(RequestUtil.getLoginUserName());
-        } else if (identity == UserRoleEnum.USER.getRoleFlag()) {
-            activityListReq.setFindAll(0);
+        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag()&& activityListReq.getFindAll()==0) {
             activityListReq.setPromoter(RequestUtil.getLoginUserName());
         } else {
             throw new BusinessException(ReturnCodes.FAILD, "清注册信息");

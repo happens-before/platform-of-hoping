@@ -20,4 +20,6 @@ public interface IUserDao {
     User isRightInfo(UserLoginReq userLoginReq);
 
     User isUser(@Param("userName") String userName);
+
+    User selectUserByUserId(@Param("userId") String userId);
 }

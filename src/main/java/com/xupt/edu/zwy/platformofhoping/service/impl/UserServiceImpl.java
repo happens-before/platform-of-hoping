@@ -83,10 +83,20 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public User selectUserInfoById(String userId) {
+        try {
+            User user = iUserDao.selectUserByUserId(userId);
+            return user;
+        } catch (Exception e) {
+            log.error("用户信息查询失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
     public boolean isRightInfo(UserLoginReq userLoginReq, HttpServletResponse response) {
         try {
             User user = iUserDao.isRightInfo(userLoginReq);
-            System.out.println(user);
             if (user == null) {
                 return false;
             }
