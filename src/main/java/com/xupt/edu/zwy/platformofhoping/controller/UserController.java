@@ -82,4 +82,12 @@ public class UserController {
         log.info("out user/update,result:{}", result);
         return CommonJsonResult.success();
     }
+
+    @PostMapping("delete")
+    public CommonJsonResult deleteUser(@RequestBody UserListDto userListDto){
+        log.info("into /user/delete,userListDto:{}", userListDto);
+        int result = userService.deleteUser(userListDto);
+        log.info("out user/delete,result:{}", result);
+        return CommonJsonResult.success();
+    }
 }

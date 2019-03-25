@@ -108,4 +108,8 @@
         </set>
         where user_id=#{userId} and valid=1;
     </update>
+
+    <update id="deleteUser" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserListDto">
+        update user set valid=0 where user_id=#{userId};
+    </update>
 </mapper>

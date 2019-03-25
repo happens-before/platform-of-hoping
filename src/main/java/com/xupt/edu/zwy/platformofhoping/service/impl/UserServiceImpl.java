@@ -122,6 +122,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public int deleteUser(UserListDto userListDto) {
+        try {
+            int result = iUserDao.deleteUser(userListDto);
+            return result;
+        } catch (Exception e) {
+            log.error("用户删除失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }    }
+
+    @Override
     public boolean isRightInfo(UserLoginReq userLoginReq, HttpServletResponse response) {
         try {
             User user = iUserDao.isRightInfo(userLoginReq);

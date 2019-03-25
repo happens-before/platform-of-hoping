@@ -31,4 +31,6 @@ public interface IUserService {
     PageInfo<User> userList(UserListDto userListDto);
 
     int updateUser(User user);
+
+    int deleteUser(UserListDto userListDto);
 }

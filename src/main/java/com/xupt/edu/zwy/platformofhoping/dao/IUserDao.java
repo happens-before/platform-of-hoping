@@ -29,4 +29,6 @@ public interface IUserDao {
     List<User> selectUserList(UserListDto userListDto);
 
     int updateUser(User user);
+
+    int deleteUser(UserListDto userListDto);
 }
