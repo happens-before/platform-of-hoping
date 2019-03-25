@@ -65,7 +65,7 @@ public class ActivityController {
     }
 
     @GetMapping("/detail")
-    public CommonJsonResult<Activity> getActivityDetail(@RequestParam("activityId") String activityId) {
+    public CommonJsonResult<Activity> getActivityDetail(@RequestParam(value = "activityId") String activityId) {
         log.info("into /activity/detail,activityId:{}", activityId);
         Activity activityDetail = activityService.getActivityDetail(activityId);
         log.info("out activity/detail,activityDetail:{}", activityDetail);

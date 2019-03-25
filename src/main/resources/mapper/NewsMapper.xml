@@ -33,7 +33,7 @@
                 and news_name like CONCAT('%',#{newsName}, '%')
             </if>
             <if test="newsCreator !=null and newsCreator != ''">
-                and news_creator = #{newsCreator}
+                and news_creator like CONCAT('%',#{newsCreator}, '%')
             </if>
             <if test="status != 0 and status !=null">
                 and status = #{status}

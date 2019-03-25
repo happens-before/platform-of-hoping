@@ -37,7 +37,7 @@
         <where>
             valid=1
             <if test="adminName!=null and adminName!=''">
-                and admin_name=#{adminName}
+                and admin_name like CONCAT('%',#{adminName}, '%')
             </if>
         </where>
         order by update_time desc

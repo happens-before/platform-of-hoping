@@ -39,4 +39,73 @@
     <select id="selectUserByUserId" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
         select * from user where user_id=#{userId} and valid=1;
     </select>
+
+    <select id="selectUserList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserListDto" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+        select * from user
+        <where>
+            valid=1
+            <if test="school != null and school != ''">
+                and school like CONCAT('%',#{school}, '%')
+            </if>
+            <if test="userSno != null and userSno != ''">
+                and user_sno like CONCAT('%',#{userSno}, '%')
+            </if>
+            <if test="community != null and community != ''">
+                and community like CONCAT('%',#{community}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like CONCAT('%',#{userName}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                and email like CONCAT('%',#{email}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like CONCAT('%',#{phone}, '%')
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <update id="updateUser" parameterType="com.xupt.edu.zwy.platformofhoping.model.User">
+        update user
+        <set>
+            <if test="college!=null and college!=''">
+                college=#{college},
+            </if>
+            <if test="profession!=null and profession!=''">
+                profession=#{profession},
+            </if>
+            <if test="minister!=null and minister >= 0">
+                minister=#{minister},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="sex !=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="age!=null and age > 0">
+                age=#{age},
+            </if>
+            <if test="school != null and school != ''">
+                school=#{school},
+            </if>
+            <if test="userSno != null and userSno != ''">
+                user_sno=#{userSno},
+            </if>
+            <if test="community != null and community != ''">
+                community=#{community},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name=#{userName},
+            </if>
+            <if test="email != null and email != ''">
+                 email=#{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                 phone=#{phone}
+            </if>
+        </set>
+        where user_id=#{userId} and valid=1;
+    </update>
 </mapper>

@@ -65,13 +65,13 @@
         <where>
             valid=1
             <if test="promoter != null and promoter != ''">
-                and promoter=#{promoter}
+                and promoter like CONCAT('%',#{promoter}, '%')
             </if>
             <if test="organizer!=null and organizer != ''">
-                and organizer=#{organizer}
+                and organizer like CONCAT('%',#{organizer}, '%')
             </if>
             <if test="activityTopic != null and activityTopic!=''">
-                and activity_topic=#{activityTopic}
+                and activity_topic like CONCAT('%',#{activityTopic}, '%')
             </if>
             <if test="activityStatus !=null and activityStatus >0">
                 and activity_status =#{activityStatus}

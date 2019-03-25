@@ -1,9 +1,12 @@
 package com.xupt.edu.zwy.platformofhoping.dao;
 
+import com.xupt.edu.zwy.platformofhoping.dto.UserListDto;
 import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -22,4 +25,8 @@ public interface IUserDao {
     User isUser(@Param("userName") String userName);
 
     User selectUserByUserId(@Param("userId") String userId);
+
+    List<User> selectUserList(UserListDto userListDto);
+
+    int updateUser(User user);
 }

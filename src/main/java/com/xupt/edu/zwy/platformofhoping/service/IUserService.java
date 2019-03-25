@@ -1,5 +1,7 @@
 package com.xupt.edu.zwy.platformofhoping.service;
 
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.UserListDto;
 import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 
@@ -25,4 +27,8 @@ public interface IUserService {
     void destroyCookie(HttpServletResponse response);
 
     User selectUserInfoById(String userId);
+
+    PageInfo<User> userList(UserListDto userListDto);
+
+    int updateUser(User user);
 }

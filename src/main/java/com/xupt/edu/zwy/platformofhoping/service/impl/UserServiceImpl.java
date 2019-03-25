@@ -1,10 +1,13 @@
 package com.xupt.edu.zwy.platformofhoping.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.base.Optional;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IUserDao;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.UserListDto;
 import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.enums.UserRoleEnum;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -89,6 +93,30 @@ public class UserServiceImpl implements IUserService {
             return user;
         } catch (Exception e) {
             log.error("用户信息查询失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public PageInfo<User> userList(UserListDto userListDto) {
+        PageHelper.startPage(userListDto.getPageNum(), 10);
+        try {
+            List<User> users = iUserDao.selectUserList(userListDto);
+            PageInfo<User> pageInfo = new PageInfo<>(users);
+            return pageInfo;
+        } catch (Exception e) {
+            log.error("用户列表查询失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public int updateUser(User user) {
+        try {
+            int result = iUserDao.updateUser(user);
+            return result;
+        } catch (Exception e) {
+            log.error("更新用户信息失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }
