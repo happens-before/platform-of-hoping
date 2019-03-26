@@ -24,6 +24,7 @@ public class Activity {
     private String activityContent;
     private Integer activityStatus;
     private Integer valid;
+    private Integer activityApproval;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

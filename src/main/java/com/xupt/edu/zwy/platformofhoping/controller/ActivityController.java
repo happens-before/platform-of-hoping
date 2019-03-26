@@ -42,8 +42,6 @@ public class ActivityController {
         System.out.println(identity);
         System.out.println(UserRoleEnum.ADMIN.getRoleFlag());
         if (activityListReq.getFindAll()==1 && identity==UserRoleEnum.ADMIN.getRoleFlag()) {
-            activityListReq.setPromoter("");
-            activityListReq.setOrganizer("");
         } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()&& activityListReq.getFindAll()==0 ){
             activityListReq.setOrganizer(RequestUtil.getLoginUserName());
         } else if (identity == UserRoleEnum.ADMIN.getRoleFlag()&& activityListReq.getFindAll()==0) {
@@ -101,6 +99,22 @@ public class ActivityController {
         log.info("into /activity/end,activityReq:{}", activityReq);
         int result = activityService.endActivity(activityReq);
         log.info("out activity/end,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/approval")
+    public CommonJsonResult approvalActivity(@RequestBody ActivityReq activityReq) {
+        log.info("into /activity/approval,activityReq:{}", activityReq);
+        int result = activityService.approvalActivity(activityReq);
+        log.info("out activity/approval,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/refuse")
+    public CommonJsonResult refuseActivity(@RequestBody ActivityReq activityReq) {
+        log.info("into /activity/refuse,activityReq:{}", activityReq);
+        int result = activityService.refuseActivity(activityReq);
+        log.info("out activity/refuse,result:{}", result);
         return CommonJsonResult.success();
     }
 }

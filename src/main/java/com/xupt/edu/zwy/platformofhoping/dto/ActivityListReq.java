@@ -22,6 +22,7 @@ public class ActivityListReq {
     private String organizer;
     private String activityTopic;
     private Integer activityStatus;
+    private Integer activityApproval;
     private String startTime;
     private String endTime;
 }

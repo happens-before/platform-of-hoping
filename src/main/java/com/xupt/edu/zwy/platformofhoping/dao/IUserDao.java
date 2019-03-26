@@ -31,4 +31,5 @@ public interface IUserDao {
     int updateUser(User user);
 
     int deleteUser(UserListDto userListDto);
+
 }

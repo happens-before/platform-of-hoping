@@ -2,7 +2,6 @@ package com.xupt.edu.zwy.platformofhoping.dto;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
 
 /**
  * Created with IntelliJ IDEA
@@ -20,6 +19,7 @@ public class ActivityReq {
     private String activityTopic;
     private String activityContent;
     private Integer activityStatus;
+    private Integer activityApproval;
     private String startTime;
     private String endTime;
 }

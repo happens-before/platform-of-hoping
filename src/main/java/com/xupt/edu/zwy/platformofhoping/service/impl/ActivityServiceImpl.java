@@ -119,4 +119,28 @@ public class ActivityServiceImpl implements IActivityService {
         }
     }
 
+    @Override
+    public int approvalActivity(ActivityReq activityReq) {
+        try {
+            activityReq.setActivityApproval(30);
+            int result = iActivityDao.updateActivity(activityReq);
+            return result;
+        } catch (Exception e) {
+            log.error("活动通过审核失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public int refuseActivity(ActivityReq activityReq) {
+        try {
+            activityReq.setActivityApproval(10);
+            int result = iActivityDao.updateActivity(activityReq);
+            return result;
+        } catch (Exception e) {
+            log.error("活动审核拒绝失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
 }

@@ -22,4 +22,5 @@ public interface IActivityDao {
     int deleteActivity(@Param("activityId")String activityId);
 
     List<Activity> selectActivityList(ActivityListReq activityListReq);
+
 }

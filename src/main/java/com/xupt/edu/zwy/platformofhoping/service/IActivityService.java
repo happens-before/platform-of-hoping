@@ -21,4 +21,9 @@ public interface IActivityService {
     int endActivity(ActivityReq activityReq);
 
     PageInfo<Activity> selectActivityList(ActivityListReq activityListReq);
+
+    int approvalActivity(ActivityReq activityReq);
+
+    int refuseActivity(ActivityReq activityReq);
+
 }
