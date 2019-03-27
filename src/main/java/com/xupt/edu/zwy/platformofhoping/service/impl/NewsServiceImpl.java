@@ -17,15 +17,19 @@ import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Comment;
 import com.xupt.edu.zwy.platformofhoping.model.News;
+import com.xupt.edu.zwy.platformofhoping.model.Picture;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import com.xupt.edu.zwy.platformofhoping.service.INewsService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
-import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -63,10 +67,12 @@ public class NewsServiceImpl implements INewsService {
     public NewsInfoDto getNewsInfoById(String newsId) {
         try {
             NewsInfoDto newsInfoDto = new NewsInfoDto();
+            System.out.println(newsId);
             News news = iNewsDao.selectNewsInfoById(newsId);
             iNewsDao.addCountNews(newsId);
             List<Comment> comments = iCommentDao.selectCommentByNewsId(newsId);
-            newsInfoDto.setNewsInfoDto(news, comments);
+            List<Picture> pictures = iPictureDao.selectPictureByNewsId(newsId);
+            newsInfoDto.setNewsInfoDto(news, comments, pictures);
             return newsInfoDto;
         } catch (Exception e) {
             log.error("查询新闻详情失败");
@@ -114,18 +120,21 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int addNews(NewsAddReq newsAddReq) {
+    public int addNews(MultipartFile file, NewsAddReq newsAddReq) {
         try {
-            newsAddReq.setNewsId(CommonUtils.getUUId32());
-            if (newsAddReq.getPicturePath() != null) {
-                newsAddReq.setPictureId(CommonUtils.getUUId32());
-                if ((iNewsDao.addNews(newsAddReq)) == 1 && (iPictureDao.addPicture(newsAddReq)) == 1) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+            if (file == null) {
+                newsAddReq.setNewsId(CommonUtils.getUUId32());
+                System.out.println(newsAddReq.getNewsId());
+                return iNewsDao.addNews(newsAddReq);
             }
-            return iNewsDao.addNews(newsAddReq);
+            newsAddReq.setNewsId(CommonUtils.getUUId32());
+            System.out.println(newsAddReq.getNewsId());
+            newsAddReq.setPictureId(CommonUtils.getUUId32());
+            newsAddReq.setPicturePath(getUploadPicturePath(file));
+            if (iNewsDao.addNews(newsAddReq) == 1 && iPictureDao.addPicture(newsAddReq) == 1) {
+                return 1;
+            }
+            return 0;
         } catch (Exception e) {
             log.error("新闻添加失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -134,16 +143,19 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateNews(NewsAddReq newsAddReq) {
+    public int updateNews(MultipartFile file, NewsAddReq newsAddReq) {
         try {
-            if (newsAddReq.getPictureId() != null) {
-                if ((iNewsDao.updateNews(newsAddReq)) == 1 && (iPictureDao.updatePicture(newsAddReq)) == 1) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+            if (file == null) {
+                return iNewsDao.updateNews(newsAddReq);
             }
-            return iNewsDao.updateNews(newsAddReq);
+            iPictureDao.deletePictureById(newsAddReq.getNewsId());
+
+            newsAddReq.setPictureId(CommonUtils.getUUId32());
+            newsAddReq.setPicturePath(getUploadPicturePath(file));
+            if (iPictureDao.addPicture(newsAddReq) == 1 && iNewsDao.updateNews(newsAddReq) == 1) {
+                return 1;
+            }
+            return 0;
         } catch (Exception e) {
             log.error("新闻更新失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -214,5 +226,31 @@ public class NewsServiceImpl implements INewsService {
         }
     }
 
+    @Override
+    public int updatePicture(MultipartFile file, NewsAddReq newsAddReq) throws IOException {
+        newsAddReq.setPicturePath(getUploadPicturePath(file));
+        return iPictureDao.updatePicture(newsAddReq);
+    }
 
+    private String getUploadPicturePath(MultipartFile file) throws IOException {
+        System.out.println(file.getName());
+        //todo 验证身份
+        //上传文件
+        String path = "/home/wanyuezhao/spring/picture/";
+        //创建文件
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String fileName = file.getOriginalFilename();
+        //zhao.jpg
+        String img = System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
+        //根据 dir 抽象路径名和 img 路径名字符串创建一个新 File 实例。
+        FileOutputStream imgOut = new FileOutputStream(new File(dir, img));
+        //返回一个字节数组文件的内容
+        imgOut.write(file.getBytes());
+        imgOut.close();
+        String picturePath = path + img;
+        return picturePath;
+    }
 }

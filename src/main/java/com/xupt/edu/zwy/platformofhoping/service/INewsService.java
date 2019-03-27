@@ -10,7 +10,9 @@ import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Reply;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -33,9 +35,9 @@ public interface INewsService {
 
     PageInfo<News> getNewsList(NewsListReq newsListReq);
 
-    int addNews(NewsAddReq newsAddReq);
+    int addNews(MultipartFile file,NewsAddReq newsAddReq);
 
-    int updateNews(NewsAddReq newsAddReq);
+    int updateNews(MultipartFile file,NewsAddReq newsAddReq);
 
     int publishNews(NewsAddReq newsAddReq);
 
@@ -46,4 +48,6 @@ public interface INewsService {
     int addReply(ReplyReq replyReq);
 
     int pauseNews(NewsAddReq newsAddReq);
+
+    int updatePicture(MultipartFile file,NewsAddReq newsAddReq) throws IOException;
 }

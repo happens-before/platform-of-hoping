@@ -57,6 +57,15 @@ public class ActivityController {
     @PostMapping("/add")
     public CommonJsonResult addActivity(@RequestBody ActivityReq activityReq) {
         log.info("into /activity/add,activityReq:{}", activityReq);
+        int identity = Integer.parseInt(RequestUtil.getLoginUserStringIdentity());
+        if (activityReq.getFindAll()==1 && identity==UserRoleEnum.ADMIN.getRoleFlag()) {
+        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()&& activityReq.getFindAll()==0 ){
+            activityReq.setOrganizer(RequestUtil.getLoginUserName());
+        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag()&& activityReq.getFindAll()==0) {
+            activityReq.setPromoter(RequestUtil.getLoginUserName());
+        } else {
+            throw new BusinessException(ReturnCodes.FAILD, "清注册信息");
+        }
         int result = activityService.addActivity(activityReq);
         log.info("out activity/add,result:{}", result);
         return CommonJsonResult.success();
@@ -79,9 +88,9 @@ public class ActivityController {
     }
 
     @PostMapping("/delete")
-    public CommonJsonResult deleteActivity(@RequestParam("activityId") String activityId) {
-        log.info("into /activity/delete,activityId:{}", activityId);
-        int result = activityService.deleteActivity(activityId);
+    public CommonJsonResult deleteActivity(@RequestBody ActivityReq activityReq) {
+        log.info("into /activity/delete,activityReq:{}", activityReq);
+        int result = activityService.deleteActivity(activityReq.getActivityId());
         log.info("out activity/delete,result:{}", result);
         return CommonJsonResult.success();
     }

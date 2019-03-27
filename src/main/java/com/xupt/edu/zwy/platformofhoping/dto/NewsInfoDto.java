@@ -2,6 +2,7 @@ package com.xupt.edu.zwy.platformofhoping.dto;
 
 import com.xupt.edu.zwy.platformofhoping.model.Comment;
 import com.xupt.edu.zwy.platformofhoping.model.News;
+import com.xupt.edu.zwy.platformofhoping.model.Picture;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,9 +24,10 @@ public class NewsInfoDto {
     private String newsContent;
     private String newsCreator;
     private Integer newsCount;
+    private List<Picture> pictures;
     private List<Comment> comments;
 
-    public void setNewsInfoDto(News news, List<Comment> comments) {
+    public void setNewsInfoDto(News news, List<Comment> comments,List<Picture> pictures) {
         this.setNewsId(news.getNewsId());
         this.setNewsName(news.getNewsName());
         this.setNewsDescription(news.getNewsDescription());
@@ -33,5 +35,6 @@ public class NewsInfoDto {
         this.setNewsCount(news.getNewsCount());
         this.setNewsCreator(news.getNewsCreator());
         this.setComments(comments);
+        this.setPictures(pictures);
     }
 }

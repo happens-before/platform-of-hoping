@@ -30,4 +30,11 @@
         where picture_id=#{pictureId}
     </update>
 
+    <select id="selectPictureByNewsId" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.Picture">
+        select * from picture where news_id=#{newsId} order by update_time desc;
+    </select>
+
+    <delete id="deletePictureById" parameterType="java.lang.String">
+        delete * from picture where news_id=#{newsId}
+    </delete>
 </mapper>

@@ -19,9 +19,9 @@
         select news_id,news_name from news where valid=1 and status=30 order by update_time desc,news_count desc limit 0,9;
     </select>
 
-    <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="String">
+    <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="java.lang.String">
         select news_id,news_name,news_description,news_content,news_creator,news_count,update_time
-        from news where news_id=#{newsId} and valid=1 and status=30
+        from news where news_id=#{newsId} and valid=1
     </select>
 
     <select id="selectNewsList" resultType="com.xupt.edu.zwy.platformofhoping.model.News"
@@ -67,10 +67,10 @@
     </update>
 
     <update id="deleteNews" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        update news set valid=0 where news_id=newsId;
+        update news set valid=0 where news_id=#{newsId};
     </update>
 
     <update id="addCountNews" parameterType="java.lang.String">
-        update news set news_count=news_count+1 where news_id=#{newsId} and valid=1;
+        update news set news_count=news_count+1 where news_id=#{newsId} and valid=1 and status =30;
     </update>
 </mapper>

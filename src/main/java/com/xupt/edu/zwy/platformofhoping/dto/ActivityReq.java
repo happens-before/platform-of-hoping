@@ -13,6 +13,7 @@ import lombok.Data;
  */
 @Data
 public class ActivityReq {
+    private int findAll;
     private String activityId;
     private String promoter;
     private String organizer;
