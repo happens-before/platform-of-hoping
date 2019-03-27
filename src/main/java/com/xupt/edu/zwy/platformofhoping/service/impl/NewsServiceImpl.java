@@ -148,8 +148,9 @@ public class NewsServiceImpl implements INewsService {
             if (file == null) {
                 return iNewsDao.updateNews(newsAddReq);
             }
-            iPictureDao.deletePictureById(newsAddReq.getNewsId());
+            int deletePictureById = iPictureDao.deletePictureById(newsAddReq.getNewsId());
 
+            System.out.println(deletePictureById);
             newsAddReq.setPictureId(CommonUtils.getUUId32());
             newsAddReq.setPicturePath(getUploadPicturePath(file));
             if (iPictureDao.addPicture(newsAddReq) == 1 && iNewsDao.updateNews(newsAddReq) == 1) {
