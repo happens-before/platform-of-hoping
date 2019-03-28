@@ -33,4 +33,56 @@
         values
         (#{organizerId},#{organizerCity},#{organizerName},#{organizerPhone},#{organizerPrincipal},#{organizerDescription},1,#{password},#{organizerAddress})
     </insert>
+
+    <select id="selectOrganizerById" parameterType="com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
+        select * from organizer where organizer_id=#{organizerId} and valid=1;
+    </select>
+
+    <select id="selectOrganzierList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
+        select * from organizer
+        <where>
+            valid=1
+            <if test="organizerCity != null and organizerCity !=''">
+                and organizer_city like CONCAT('%',#{organizerCity}, '%')
+            </if>
+            <if test="organizerName != null and organizerName !=''">
+                and organizer_name like CONCAT('%',#{organizerName}, '%')
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <update id="deleteOrganizer" parameterType="com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq">
+        update organizer set valid=0 where organizer_id=#{organizerId};
+    </update>
+
+    <update id="updateOrganizer" parameterType="com.xupt.edu.zwy.platformofhoping.model.Organizer">
+        update organizer
+        <set>
+            <if test="organizerCity!=null and organizerCity!=''">
+                organizer_city=#{organizerCity},
+            </if>
+            <if test="organizerName!=null and organizerName!=''">
+                organizer_name=#{organizerName},
+            </if>
+            <if test="organizerPhone!=null and organizerPhone!=''">
+                organizer_phone=#{organizerPhone},
+            </if>
+            <if test="organizerPrincipal!=null and organizerPrincipal!=''">
+                organizer_principal=#{organizerPrincipal},
+            </if>
+            <if test="organizerDescription!=null and organizerDescription!=''">
+                organizer_description=#{organizerDescription},
+            </if>
+            <if test="organizerAddress!=null and organizerAddress!=''">
+                organizer_address=#{organizerAddress},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password}
+            </if>
+        </set>
+        where organizer_id=#{organizerId} and valid=1;
+    </update>
 </mapper>

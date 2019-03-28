@@ -47,7 +47,7 @@
                 activity_status=#{activityStatus},
             </if>
             <if test="activityApproval != null and activityApproval !=''">
-                activity_approval=activityApproval,
+                activity_approval=#{activityApproval},
             </if>
             <if test="startTime!=null and startTime!=''">
                 start_time=#{startTime},

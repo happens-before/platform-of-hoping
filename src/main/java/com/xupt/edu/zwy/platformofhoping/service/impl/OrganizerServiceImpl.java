@@ -1,10 +1,12 @@
 package com.xupt.edu.zwy.platformofhoping.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.base.Optional;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
 import com.xupt.edu.zwy.platformofhoping.dto.OrganizerReq;
+import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.enums.UserRoleEnum;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -61,7 +64,6 @@ public class OrganizerServiceImpl implements IOrganizerService {
         }
     }
 
-
     @Override
     public boolean isRightInfo(OrganizerReq organizerReq, HttpServletResponse response) {
         try {
@@ -73,6 +75,50 @@ public class OrganizerServiceImpl implements IOrganizerService {
             return true;
         } catch (Exception e) {
             log.error("组织登陆失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public Organizer selectOrganizerById(OrganizerReq organizerReq) {
+        try{
+            Organizer organizer = iOrganizerDao.selectOrganizerById(organizerReq);
+            return organizer;
+        }catch (Exception e){
+            log.error("获取组织信息失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public PageInfo<Organizer> selectOragnizerList(OrganizerReq organizerReq) {
+        PageHelper.startPage(organizerReq.getPageNum(), 10);
+        try{
+            List<Organizer> organizers = iOrganizerDao.selectOrganzierList(organizerReq);
+            PageInfo<Organizer> pageInfo=new PageInfo<>(organizers);
+            return pageInfo;
+        }catch (Exception e){
+            log.error("获取组织列表失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public int deleteOrganizer(OrganizerReq organizerReq) {
+        try{
+            return iOrganizerDao.deleteOrganizer(organizerReq);
+        }catch (Exception e){
+            log.error("删除组织失败");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    public int updateOrganizer(Organizer organizer) {
+        try{
+          return iOrganizerDao.updateOrganizer(organizer);
+        }catch (Exception e){
+            log.error("更新组织信息失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }

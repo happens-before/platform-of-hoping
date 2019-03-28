@@ -12,6 +12,8 @@ import lombok.Data;
  */
 @Data
 public class OrganizerReq {
+    private int  pageNum;
+    private String organizerId;
     private String organizerCity;
     private String organizerName;
     private String password;
