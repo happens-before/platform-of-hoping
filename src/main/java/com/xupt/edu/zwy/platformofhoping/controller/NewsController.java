@@ -108,18 +108,18 @@ public class NewsController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file) {
-        log.info("into /news/add,file:{},newsAddReq:{}", file, newsAddReq);
-        int result = newsService.addNews(file, newsAddReq);
+    public CommonJsonResult addNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
+        log.info("into /news/add,file:{},newsAddReq:{}", file, newsAddReq,request);
+        int result = newsService.addNews(file, newsAddReq,request);
         log.info("out /news/add,result:{}", result);
         return CommonJsonResult.success();
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file) {
+    public CommonJsonResult updateNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
         log.info("into /news/update,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
-        int result = newsService.updateNews(file,newsAddReq);
+        int result = newsService.updateNews(file,newsAddReq,request);
         log.info("out /news/update,result:{}", result);
         return CommonJsonResult.success();
     }

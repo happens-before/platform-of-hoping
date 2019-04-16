@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 public class UserListDto {
-    private Integer pageNum;
+    private int pageNum;
     private String userId;
     private String school;
     private String userSno;

@@ -35,7 +35,9 @@ public class ActivityServiceImpl implements IActivityService {
     @Transactional(rollbackFor = Exception.class)
     public int addActivity(ActivityReq activityReq) {
         try {
+            System.out.println(activityReq);
             activityReq.setActivityId(CommonUtils.getUUId32());
+            System.out.println("****");
             int result = iActivityDao.addActivity(activityReq);
             return result;
         } catch (Exception e) {

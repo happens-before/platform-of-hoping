@@ -15,7 +15,7 @@ public class AdminReq {
     /**
      * 当前的页码
      */
-    private Integer pageNum;
+    private int pageNum;
     private String adminId;
     private String adminName;
 

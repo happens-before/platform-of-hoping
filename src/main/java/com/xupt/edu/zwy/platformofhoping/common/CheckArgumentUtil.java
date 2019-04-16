@@ -1,8 +1,5 @@
 package com.xupt.edu.zwy.platformofhoping.common;
 
-import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
-import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
-import com.xupt.edu.zwy.platformofhoping.enums.NewsStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,8 +42,4 @@ public final class CheckArgumentUtil {
         }
     }
 
-
-    public static void checkActivityListReq(ActivityListReq activityListReq) throws BusinessException{
-
-    }
 }

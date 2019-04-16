@@ -15,7 +15,7 @@ public class NewsListReq {
     /**
      * 当前的页码
      */
-    private Integer pageNum;
+    private int pageNum;
     /**
      * 搜索条件：新闻名称
      */

@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -120,7 +121,7 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int addNews(MultipartFile file, NewsAddReq newsAddReq) {
+    public int addNews(MultipartFile file, NewsAddReq newsAddReq, HttpServletRequest request) {
         try {
             if (file == null) {
                 newsAddReq.setNewsId(CommonUtils.getUUId32());
@@ -130,7 +131,7 @@ public class NewsServiceImpl implements INewsService {
             newsAddReq.setNewsId(CommonUtils.getUUId32());
             System.out.println(newsAddReq.getNewsId());
             newsAddReq.setPictureId(CommonUtils.getUUId32());
-            newsAddReq.setPicturePath(getUploadPicturePath(file));
+            newsAddReq.setPicturePath(getUploadPicturePath(file,request));
             if (iNewsDao.addNews(newsAddReq) == 1 && iPictureDao.addPicture(newsAddReq) == 1) {
                 return 1;
             }
@@ -143,7 +144,7 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateNews(MultipartFile file, NewsAddReq newsAddReq) {
+    public int updateNews(MultipartFile file, NewsAddReq newsAddReq,HttpServletRequest request) {
         try {
             if (file == null) {
                 return iNewsDao.updateNews(newsAddReq);
@@ -152,7 +153,7 @@ public class NewsServiceImpl implements INewsService {
 
             System.out.println(deletePictureById);
             newsAddReq.setPictureId(CommonUtils.getUUId32());
-            newsAddReq.setPicturePath(getUploadPicturePath(file));
+            newsAddReq.setPicturePath(getUploadPicturePath(file,request));
             if (iPictureDao.addPicture(newsAddReq) == 1 && iNewsDao.updateNews(newsAddReq) == 1) {
                 return 1;
             }
@@ -227,17 +228,20 @@ public class NewsServiceImpl implements INewsService {
         }
     }
 
-    @Override
-    public int updatePicture(MultipartFile file, NewsAddReq newsAddReq) throws IOException {
-        newsAddReq.setPicturePath(getUploadPicturePath(file));
-        return iPictureDao.updatePicture(newsAddReq);
-    }
+//    @Override
+//    public int updatePicture(MultipartFile file, NewsAddReq newsAddReq) throws IOException {
+//        newsAddReq.setPicturePath(getUploadPicturePath(file));
+//        return iPictureDao.updatePicture(newsAddReq);
+//    }
 
-    private String getUploadPicturePath(MultipartFile file) throws IOException {
+    private String getUploadPicturePath(MultipartFile file,HttpServletRequest request) throws IOException {
         System.out.println(file.getName());
         //todo 验证身份
         //上传文件
-        String path = "/home/wanyuezhao/spring/picture/";
+//        String path = "/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/pictures/";
+//        String path = request.getServletContext().getRealPath("/upload/newsPictures/");
+        String path="/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/upload/";
+        System.out.println(path);
         //创建文件
         File dir = new File(path);
         if (!dir.exists()) {
@@ -251,7 +255,7 @@ public class NewsServiceImpl implements INewsService {
         //返回一个字节数组文件的内容
         imgOut.write(file.getBytes());
         imgOut.close();
-        String picturePath = path + img;
+        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/upload/"+img;
         return picturePath;
     }
 }

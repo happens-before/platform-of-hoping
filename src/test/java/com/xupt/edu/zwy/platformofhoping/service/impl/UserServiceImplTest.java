@@ -3,6 +3,7 @@ package com.xupt.edu.zwy.platformofhoping.service.impl;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import com.xupt.edu.zwy.platformofhoping.service.IUserService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +18,10 @@ import static org.junit.Assert.*;
 public class UserServiceImplTest {
     @Resource
     private IUserService userService;
+
     @Test
     public void addUser() {
-        User user=new User();
+        User user = new User();
         user.setSchool("西安邮电大学");
         user.setCollege("经济与管理学院");
         user.setProfession("工程管理专业");
@@ -43,5 +45,20 @@ public class UserServiceImplTest {
 
     @Test
     public void isRightInfo() {
+    }
+
+    @Test
+    public void tesy() {
+        String name = null;
+        System.out.println(StringUtils.isBlank(name));
+        if (name == null) {
+            System.out.println("1.null");
+        }
+        if (StringUtils.isBlank(name)) {
+            System.out.println("2.null");
+        }
+        if(StringUtils.isEmpty(name)){
+            System.out.println("3.null");
+        }
     }
 }
