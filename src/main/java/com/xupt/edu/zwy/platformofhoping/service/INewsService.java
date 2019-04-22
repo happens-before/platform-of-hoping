@@ -1,9 +1,9 @@
 package com.xupt.edu.zwy.platformofhoping.service;
 
 import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
+import com.xupt.edu.zwy.platformofhoping.dto.HomeInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
-import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsInfoDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
@@ -13,8 +13,6 @@ import com.xupt.edu.zwy.platformofhoping.model.Reply;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -26,7 +24,7 @@ import java.util.List;
  * @Time 下午2:01
  */
 public interface INewsService {
-    List<NewsHomeDto> getNewsHome();
+    HomeInfo getNewsHome();
 
     NewsInfoDto getNewsInfoById(String newsId);
 

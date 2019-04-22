@@ -4,6 +4,7 @@ import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.common.CheckArgumentUtil;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
 import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
+import com.xupt.edu.zwy.platformofhoping.dto.HomeInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
@@ -48,15 +49,15 @@ public class NewsController {
     private INewsService newsService;
 
     @GetMapping("/home")
-    public CommonJsonResult<List<NewsHomeDto>> newsHome() {
+    public CommonJsonResult<HomeInfo> newsHome() {
         log.info("into /news/home");
         //todo 验证本人身份
 
         //从数据库取数据
-        List<NewsHomeDto> newsHome = newsService.getNewsHome();
+        HomeInfo homeInfo = newsService.getNewsHome();
 
-        log.info("out /news/home,newsHome:{}", newsHome);
-        return CommonJsonResult.success(newsHome);
+        log.info("out /news/home,newsHome:{}", homeInfo);
+        return CommonJsonResult.success(homeInfo);
     }
 
     @GetMapping("/info")

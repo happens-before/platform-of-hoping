@@ -2,11 +2,13 @@ package com.xupt.edu.zwy.platformofhoping.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
+import com.xupt.edu.zwy.platformofhoping.dao.IActivityDao;
 import com.xupt.edu.zwy.platformofhoping.dao.ICommentDao;
 import com.xupt.edu.zwy.platformofhoping.dao.INewsDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IPictureDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IReplyDao;
 import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
+import com.xupt.edu.zwy.platformofhoping.dto.HomeInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsDto;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto;
@@ -15,6 +17,7 @@ import com.xupt.edu.zwy.platformofhoping.dto.NewsListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ReplyReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
+import com.xupt.edu.zwy.platformofhoping.model.Activity;
 import com.xupt.edu.zwy.platformofhoping.model.Comment;
 import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Picture;
@@ -52,12 +55,17 @@ public class NewsServiceImpl implements INewsService {
     private ICommentDao iCommentDao;
     @Resource
     private IReplyDao iReplyDao;
+    @Resource
+    private IActivityDao iActivityDao;
 
     @Override
-    public List<NewsHomeDto> getNewsHome() {
+    public HomeInfo getNewsHome() {
         try {
             List<NewsHomeDto> newsHomeInfo = iPictureDao.getNewsHomeInfo();
-            return newsHomeInfo;
+            List<Activity> lastActivity = iActivityDao.getLastActivity();
+            HomeInfo homeInfo=new HomeInfo();
+            homeInfo.setHomeInfo(newsHomeInfo,lastActivity);
+            return homeInfo;
         } catch (Exception e) {
             log.error("查询主页图片失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");

@@ -90,4 +90,7 @@
         </where>
         order by update_time desc,activity_status desc,activity_approval desc
     </select>
+    <select id="getLastActivity" resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
+        select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc limit 0,10;
+    </select>
 </mapper>

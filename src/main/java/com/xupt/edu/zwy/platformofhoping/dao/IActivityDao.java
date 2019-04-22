@@ -23,4 +23,5 @@ public interface IActivityDao {
 
     List<Activity> selectActivityList(ActivityListReq activityListReq);
 
+    List<Activity> getLastActivity();
 }
