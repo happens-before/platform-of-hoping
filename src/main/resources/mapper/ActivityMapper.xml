@@ -14,13 +14,17 @@
       start_time,
       end_time,
       create_time,
-      update_time
+      update_time,
+      people_total,
+      people_join,
+      content_file,
+      summary_file
     </sql>
 
     <insert id="addActivity" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ActivityReq">
-      insert into activity (activity_id,promoter,organizer,activity_topic,activity_content,activity_status,valid,start_time,end_time,activity_approval)
+      insert into activity (activity_id,promoter,organizer,activity_topic,activity_content,activity_status,valid,start_time,end_time,activity_approval,people_total,content_file)
       values
-      (#{activityId},#{promoter},#{organizer},#{activityTopic},#{activityContent},20,1,#{startTime},#{endTime},20);
+      (#{activityId},#{promoter},#{organizer},#{activityTopic},#{activityContent},20,1,#{startTime},#{endTime},20,#{peopleTotal},#{contentFile});
     </insert>
 
     <select id="selectActivityById" parameterType="java.lang.String"
@@ -49,6 +53,16 @@
             <if test="activityApproval != null and activityApproval !=''">
                 activity_approval=#{activityApproval},
             </if>
+
+            <if test="peopleTotal != null and peopleTotal !=''">
+                people_total=#{peopleTotal},
+            </if>
+            <if test="contentFile != null and contentFile !=''">
+                content_file=#{contentFile},
+            </if>
+            <if test="summaryFile != null and summaryFile !=''">
+                summary_file=#{summaryFile},
+            </if>
             <if test="startTime!=null and startTime!=''">
                 start_time=#{startTime},
             </if>
@@ -65,7 +79,7 @@
 
     <select id="selectActivityList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq"
             resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
-        select * from  activity
+        select * from activity
         <where>
             valid=1
             <if test="promoter != null and promoter != ''">
@@ -93,4 +107,11 @@
     <select id="getLastActivity" resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
         select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc limit 0,10;
     </select>
+    <update id="addActivityJoin" parameterType="java.lang.String">
+       update activity set pepole_join=people+1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
+   </update>
+    <update id="cancelActivityJoin" parameterType="java.lang.String">
+       update activity set pepole_join=people-1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
+   </update>
+
 </mapper>

@@ -23,4 +23,8 @@ public class ActivityReq {
     private Integer activityApproval;
     private String startTime;
     private String endTime;
+    private Integer peopleTotal;
+    private Integer peopleJoin;
+    private String contentFile;
+    private String summaryFile;
 }

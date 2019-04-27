@@ -12,12 +12,11 @@ import com.xupt.edu.zwy.platformofhoping.dto.UserLoginReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.enums.UserRoleEnum;
 import com.xupt.edu.zwy.platformofhoping.model.Admin;
-import com.xupt.edu.zwy.platformofhoping.model.Organizer;
 import com.xupt.edu.zwy.platformofhoping.model.User;
 import com.xupt.edu.zwy.platformofhoping.service.IUserService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,20 +48,18 @@ public class UserServiceImpl implements IUserService {
 
     public static final String COOKIE_TIME = "platform_time";
 
+    public static final String COOKIE_ISMINISTER = "platform_isMinister";
+
     @Resource
     private IUserDao iUserDao;
     @Resource
     private IAdminDao iAdminDao;
-    @Resource
-    private IOrganizerDao iOrganizerDao;
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int addUser(User user) {
         try {
             user.setUserId(CommonUtils.getUUId32());
-            System.out.println(user);
             int result = iUserDao.addUser(user);
             return result;
         } catch (Exception e) {
@@ -129,7 +126,8 @@ public class UserServiceImpl implements IUserService {
         } catch (Exception e) {
             log.error("用户删除失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
-        }    }
+        }
+    }
 
     @Override
     public boolean isRightInfo(UserLoginReq userLoginReq, HttpServletResponse response) {
@@ -151,6 +149,7 @@ public class UserServiceImpl implements IUserService {
         try {
             Optional<User> optionalUser = Optional.fromNullable(user);
             int identity = getUserIdentityByName(user.getUserName());
+            int minister = minister(user.getUserName());
             if (!optionalUser.isPresent()) {
                 log.error("获得的用户为空");
             } else {
@@ -158,12 +157,15 @@ public class UserServiceImpl implements IUserService {
                 String cookieUserId = new StringBuilder(COOKIE_USERID).append("=").append(user.getUserId()).append(";Path=/;Max-Age=43200").toString();
                 String cookieIdentity = new StringBuilder(COOKIE_IDENTITY).append("=").append(identity).append(";Path=/;Max-Age=43200").toString();
                 String cookieName = new StringBuilder(COOKIE_NAME).append("=").append(URLEncoder.encode(user.getUserName(), "UTF-8")).append(";Path=/;Max-Age=43200").toString();
+                String cookieMinister = new StringBuilder(COOKIE_ISMINISTER).append("=").append(minister).append(";Path=/;Max-Age=43200").toString();
                 String cookieTime = new StringBuilder(COOKIE_TIME).append("=").append(now).append(";Path=/;Max-Age=43200").toString();
+
                 response.addHeader("Set-Cookie", cookieUserId);
                 response.addHeader("Set-Cookie", cookieIdentity);
                 response.addHeader("Set-Cookie", cookieName);
+                response.addHeader("Set-Cookie", cookieMinister);
                 response.addHeader("Set-Cookie", cookieTime);
-                log.info("cookie设置信息：platform_userId：{} platform_identity：{} platform_name：{} platform_time：{} ", user.getUserId(), identity, user.getUserName(), now);
+                log.info("cookie设置信息：platform_userId：{} platform_identity：{} platform_name：{} platform_isMinister:{} platform_time：{} ", user.getUserId(), identity, user.getUserName(), minister, now);
                 return true;
             }
         } catch (BusinessException e) {
@@ -183,6 +185,15 @@ public class UserServiceImpl implements IUserService {
             return UserRoleEnum.USER.getRoleFlag();
         }
 
+    }
+
+    private int minister(String userName) {
+        User user = iUserDao.minister(userName);
+        Optional<User> optionalUser = Optional.fromNullable(user);
+        if (optionalUser.isPresent()) {
+            return 1;
+        }
+        return 0;
     }
 
 

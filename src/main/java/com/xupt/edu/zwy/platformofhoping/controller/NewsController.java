@@ -69,7 +69,7 @@ public class NewsController {
         CheckArgumentUtil.checkNewsId(newsId);
         NewsInfoDto newsInfoById = newsService.getNewsInfoById(newsId);
 
-        log.info("out /news/info");
+        log.info("out /news/info,newsInfoById:{}",newsInfoById);
         return CommonJsonResult.success(newsInfoById);
 
     }

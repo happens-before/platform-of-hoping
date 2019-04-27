@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA
@@ -41,10 +43,10 @@ public class ActivityController {
         int identity = Integer.parseInt(RequestUtil.getLoginUserStringIdentity());
         System.out.println(identity);
         System.out.println(UserRoleEnum.ADMIN.getRoleFlag());
-        if (activityListReq.getFindAll()==1 && identity==UserRoleEnum.ADMIN.getRoleFlag()) {
-        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()&& activityListReq.getFindAll()==0 ){
+        if (activityListReq.getFindAll() == 1 && identity == UserRoleEnum.ADMIN.getRoleFlag()) {
+        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag() && activityListReq.getFindAll() == 0) {
             activityListReq.setOrganizer(RequestUtil.getLoginUserName());
-        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag()&& activityListReq.getFindAll()==0) {
+        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag() && activityListReq.getFindAll() == 0) {
             activityListReq.setPromoter(RequestUtil.getLoginUserName());
         } else {
             throw new BusinessException(ReturnCodes.FAILD, "清注册信息");
@@ -55,18 +57,18 @@ public class ActivityController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addActivity(@RequestBody ActivityReq activityReq) {
+    public CommonJsonResult addActivity(ActivityReq activityReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
         log.info("into /activity/add,activityReq:{}", activityReq);
         int identity = Integer.parseInt(RequestUtil.getLoginUserStringIdentity());
-        if (activityReq.getFindAll()==1 && identity==UserRoleEnum.ADMIN.getRoleFlag()) {
-        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag()&& activityReq.getFindAll()==0 ){
+        if (activityReq.getFindAll() == 1 && identity == UserRoleEnum.ADMIN.getRoleFlag()) {
+        } else if (identity == UserRoleEnum.ORGANIZER.getRoleFlag() && activityReq.getFindAll() == 0) {
             activityReq.setOrganizer(RequestUtil.getLoginUserName());
-        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag()&& activityReq.getFindAll()==0) {
+        } else if (identity == UserRoleEnum.ADMIN.getRoleFlag() && activityReq.getFindAll() == 0) {
             activityReq.setPromoter(RequestUtil.getLoginUserName());
         } else {
             throw new BusinessException(ReturnCodes.FAILD, "清注册信息");
         }
-        int result = activityService.addActivity(activityReq);
+        int result = activityService.addActivity(file, activityReq, request);
         log.info("out activity/add,result:{}", result);
         return CommonJsonResult.success();
     }
@@ -80,9 +82,9 @@ public class ActivityController {
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateActivity(@RequestBody ActivityReq activityReq) {
+    public CommonJsonResult updateActivity(ActivityReq activityReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
         log.info("into /activity/update,activityReq:{}", activityReq);
-        int result = activityService.updateActivity(activityReq);
+        int result = activityService.updateActivity(file, activityReq, request);
         log.info("out activity/update,result:{}", result);
         return CommonJsonResult.success();
     }
@@ -124,6 +126,14 @@ public class ActivityController {
         log.info("into /activity/refuse,activityReq:{}", activityReq);
         int result = activityService.refuseActivity(activityReq);
         log.info("out activity/refuse,result:{}", result);
+        return CommonJsonResult.success();
+    }
+
+    @PostMapping("/summary")
+    public CommonJsonResult summaryActivity(ActivityReq activityReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
+        log.info("into /activity/summary,activityReq:{}", activityReq);
+        int result = activityService.summaryActivity(file, activityReq, request);
+        log.info("out activity/summary,result:{}", result);
         return CommonJsonResult.success();
     }
 }

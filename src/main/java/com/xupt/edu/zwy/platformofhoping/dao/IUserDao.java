@@ -32,4 +32,6 @@ public interface IUserDao {
 
     int deleteUser(UserListDto userListDto);
 
+    User minister(@Param("userName") String userName);
+
 }

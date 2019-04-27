@@ -47,8 +47,6 @@ public class OrganizerServiceImpl implements IOrganizerService {
 
     @Resource
     private IOrganizerDao iOrganizerDao;
-    @Resource
-    private IAdminDao iAdminDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

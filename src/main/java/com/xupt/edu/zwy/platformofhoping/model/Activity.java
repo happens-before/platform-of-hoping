@@ -25,6 +25,10 @@ public class Activity {
     private Integer activityStatus;
     private Integer valid;
     private Integer activityApproval;
+    private Integer peopleTotal;
+    private Integer peopleJoin;
+    private String contentFile;
+    private String summaryFile;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp startTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

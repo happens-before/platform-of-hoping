@@ -3,6 +3,10 @@ package com.xupt.edu.zwy.platformofhoping.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.IActivityDao;
+import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
+import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
+import com.xupt.edu.zwy.platformofhoping.dao.IUserDao;
+import com.xupt.edu.zwy.platformofhoping.dao.IVolunteerDao;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
@@ -10,11 +14,17 @@ import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Activity;
 import com.xupt.edu.zwy.platformofhoping.service.IActivityService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
+import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,18 +40,64 @@ import java.util.List;
 public class ActivityServiceImpl implements IActivityService {
     @Resource
     private IActivityDao iActivityDao;
+    @Resource
+    private IAdminDao iAdminDao;
+    @Resource
+    private IUserDao iUserDao;
+    @Resource
+    private IVolunteerDao iVolunteerDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int addActivity(ActivityReq activityReq) {
+    public int addActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request) {
         try {
-            System.out.println(activityReq);
+            //管理员，部长，组织者
+            if (iAdminDao.isAdmin(RequestUtil.getLoginUserName()) == null || iUserDao.minister(RequestUtil.getLoginUserName()) == null) {
+                throw new BusinessException(ReturnCodes.FAILD, "用户权限不够");
+            }
             activityReq.setActivityId(CommonUtils.getUUId32());
-            System.out.println("****");
-            int result = iActivityDao.addActivity(activityReq);
-            return result;
+            if (file == null) {
+                return iActivityDao.addActivity(activityReq);
+            }
+            String path = getPathOfFile(file, request);
+            activityReq.setContentFile(path);
+            return iActivityDao.addActivity(activityReq);
+
         } catch (Exception e) {
             log.error("活动添加失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request) {
+        try {
+            if (file == null) {
+                return iActivityDao.updateActivity(activityReq);
+            }
+            String path = getPathOfFile(file, request);
+            activityReq.setContentFile(path);
+            return iActivityDao.updateActivity(activityReq);
+        } catch (Exception e) {
+            log.error("更新活动内容失败，请重试");
+            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+        }
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int summaryActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request) {
+        try {
+            if (file == null) {
+                return iActivityDao.updateActivity(activityReq);
+            }
+            String path = getPathOfFile(file, request);
+            activityReq.setSummaryFile(path);
+            return iActivityDao.addActivity(activityReq);
+        } catch (Exception e) {
+            log.error("更新活动总结失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }
@@ -57,17 +113,6 @@ public class ActivityServiceImpl implements IActivityService {
         }
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int updateActivity(ActivityReq activityReq) {
-        try {
-            int result = iActivityDao.updateActivity(activityReq);
-            return result;
-        } catch (Exception e) {
-            log.error("更新活动内容失败，请重试");
-            throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
-        }
-    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -99,8 +144,10 @@ public class ActivityServiceImpl implements IActivityService {
     public int endActivity(ActivityReq activityReq) {
         try {
             activityReq.setActivityStatus(10);
-            int result = iActivityDao.updateActivity(activityReq);
-            return result;
+            if (iActivityDao.updateActivity(activityReq) == 1 && iVolunteerDao.overdueVolunteer(activityReq.getActivityId()) == 1) {
+                return 1;
+            }
+            return 0;
         } catch (Exception e) {
             log.error("终止活动失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -121,6 +168,7 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int approvalActivity(ActivityReq activityReq) {
         try {
             activityReq.setActivityApproval(30);
@@ -133,6 +181,7 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int refuseActivity(ActivityReq activityReq) {
         try {
             activityReq.setActivityApproval(10);
@@ -142,6 +191,23 @@ public class ActivityServiceImpl implements IActivityService {
             log.error("活动审核拒绝失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
+    }
+
+    private String getPathOfFile(MultipartFile file, HttpServletRequest request) throws IOException {
+        System.out.println(file.getName());
+        //todo 验证身份
+        String path = "/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/activity/content/";
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String fileName = file.getOriginalFilename();
+        String suffix = System.currentTimeMillis() + fileName.substring(fileName.lastIndexOf("."));
+        FileOutputStream imgOut = new FileOutputStream(new File(dir, suffix));
+        imgOut.write(file.getBytes());
+        imgOut.close();
+        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/upload/" + suffix;
+        return picturePath;
     }
 
 }

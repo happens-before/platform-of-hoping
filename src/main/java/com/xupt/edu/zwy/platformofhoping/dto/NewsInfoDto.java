@@ -24,17 +24,19 @@ public class NewsInfoDto {
     private String newsContent;
     private String newsCreator;
     private Integer newsCount;
+    private Date updateTime;
     private List<Picture> pictures;
-    private List<Comment> comments;
+    private List<CommentReply> commentReplies;
 
-    public void setNewsInfoDto(News news, List<Comment> comments,List<Picture> pictures) {
+    public void setNewsInfoDto(News news, List<CommentReply> commentReplies,List<Picture> pictures) {
         this.setNewsId(news.getNewsId());
         this.setNewsName(news.getNewsName());
+        this.setUpdateTime(news.getUpdateTime());
         this.setNewsDescription(news.getNewsDescription());
         this.setNewsContent(news.getNewsContent());
         this.setNewsCount(news.getNewsCount());
         this.setNewsCreator(news.getNewsCreator());
-        this.setComments(comments);
+        this.setCommentReplies(commentReplies);
         this.setPictures(pictures);
     }
 }

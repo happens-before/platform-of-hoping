@@ -24,4 +24,10 @@ public interface IActivityDao {
     List<Activity> selectActivityList(ActivityListReq activityListReq);
 
     List<Activity> getLastActivity();
+
+    int addActivityJoin(@Param("activityId") String activityId);
+
+    int cancelActivityJoin(@Param("activityId") String activityId);
+
+
 }

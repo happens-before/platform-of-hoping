@@ -36,11 +36,13 @@
         select * from user where user_name=#{userName} and valid=1;
     </select>
 
-    <select id="selectUserByUserId" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+    <select id="selectUserByUserId" parameterType="java.lang.String"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.User">
         select * from user where user_id=#{userId} and valid=1;
     </select>
 
-    <select id="selectUserList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserListDto" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+    <select id="selectUserList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserListDto"
+            resultType="com.xupt.edu.zwy.platformofhoping.model.User">
         select * from user
         <where>
             valid=1
@@ -100,10 +102,10 @@
                 user_name=#{userName},
             </if>
             <if test="email != null and email != ''">
-                 email=#{email},
+                email=#{email},
             </if>
             <if test="phone != null and phone != ''">
-                 phone=#{phone}
+                phone=#{phone}
             </if>
         </set>
         where user_id=#{userId} and valid=1;
@@ -112,4 +114,8 @@
     <update id="deleteUser" parameterType="com.xupt.edu.zwy.platformofhoping.dto.UserListDto">
         update user set valid=0 where user_id=#{userId};
     </update>
+
+    <select id="minister" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
+        select * from user where user_name=#{userName};
+    </select>
 </mapper>

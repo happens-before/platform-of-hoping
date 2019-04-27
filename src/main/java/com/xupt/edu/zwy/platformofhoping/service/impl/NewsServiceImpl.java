@@ -7,6 +7,7 @@ import com.xupt.edu.zwy.platformofhoping.dao.ICommentDao;
 import com.xupt.edu.zwy.platformofhoping.dao.INewsDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IPictureDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IReplyDao;
+import com.xupt.edu.zwy.platformofhoping.dto.CommentReply;
 import com.xupt.edu.zwy.platformofhoping.dto.CommentReq;
 import com.xupt.edu.zwy.platformofhoping.dto.HomeInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,8 +65,8 @@ public class NewsServiceImpl implements INewsService {
         try {
             List<NewsHomeDto> newsHomeInfo = iPictureDao.getNewsHomeInfo();
             List<Activity> lastActivity = iActivityDao.getLastActivity();
-            HomeInfo homeInfo=new HomeInfo();
-            homeInfo.setHomeInfo(newsHomeInfo,lastActivity);
+            HomeInfo homeInfo = new HomeInfo();
+            homeInfo.setHomeInfo(newsHomeInfo, lastActivity);
             return homeInfo;
         } catch (Exception e) {
             log.error("查询主页图片失败");
@@ -76,12 +78,30 @@ public class NewsServiceImpl implements INewsService {
     public NewsInfoDto getNewsInfoById(String newsId) {
         try {
             NewsInfoDto newsInfoDto = new NewsInfoDto();
-            System.out.println(newsId);
+            //新闻详情
             News news = iNewsDao.selectNewsInfoById(newsId);
+
+            //增加点击量
             iNewsDao.addCountNews(newsId);
+
+            //评论
             List<Comment> comments = iCommentDao.selectCommentByNewsId(newsId);
+
+            System.out.println(comments);
+            List<CommentReply> commentReplies = new ArrayList<>();
+            //评论追评信息
+            for (Comment comment : comments) {
+                List<Reply> replies = iReplyDao.selectReplyByCommentId(comment.getCommentId());
+                CommentReply commentReply = new CommentReply();
+                commentReply.setCommentReply(comment, replies);
+                commentReplies.add(commentReply);
+            }
+
+            //图片
             List<Picture> pictures = iPictureDao.selectPictureByNewsId(newsId);
-            newsInfoDto.setNewsInfoDto(news, comments, pictures);
+
+
+            newsInfoDto.setNewsInfoDto(news, commentReplies, pictures);
             return newsInfoDto;
         } catch (Exception e) {
             log.error("查询新闻详情失败");
@@ -139,7 +159,7 @@ public class NewsServiceImpl implements INewsService {
             newsAddReq.setNewsId(CommonUtils.getUUId32());
             System.out.println(newsAddReq.getNewsId());
             newsAddReq.setPictureId(CommonUtils.getUUId32());
-            newsAddReq.setPicturePath(getUploadPicturePath(file,request));
+            newsAddReq.setPicturePath(getUploadPicturePath(file, request));
             if (iNewsDao.addNews(newsAddReq) == 1 && iPictureDao.addPicture(newsAddReq) == 1) {
                 return 1;
             }
@@ -152,7 +172,7 @@ public class NewsServiceImpl implements INewsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateNews(MultipartFile file, NewsAddReq newsAddReq,HttpServletRequest request) {
+    public int updateNews(MultipartFile file, NewsAddReq newsAddReq, HttpServletRequest request) {
         try {
             if (file == null) {
                 return iNewsDao.updateNews(newsAddReq);
@@ -161,7 +181,7 @@ public class NewsServiceImpl implements INewsService {
 
             System.out.println(deletePictureById);
             newsAddReq.setPictureId(CommonUtils.getUUId32());
-            newsAddReq.setPicturePath(getUploadPicturePath(file,request));
+            newsAddReq.setPicturePath(getUploadPicturePath(file, request));
             if (iPictureDao.addPicture(newsAddReq) == 1 && iNewsDao.updateNews(newsAddReq) == 1) {
                 return 1;
             }
@@ -236,21 +256,14 @@ public class NewsServiceImpl implements INewsService {
         }
     }
 
-//    @Override
-//    public int updatePicture(MultipartFile file, NewsAddReq newsAddReq) throws IOException {
-//        newsAddReq.setPicturePath(getUploadPicturePath(file));
-//        return iPictureDao.updatePicture(newsAddReq);
-//    }
-
-    private String getUploadPicturePath(MultipartFile file,HttpServletRequest request) throws IOException {
+    private String getUploadPicturePath(MultipartFile file, HttpServletRequest request) throws IOException {
         System.out.println(file.getName());
         //todo 验证身份
         //上传文件
 //        String path = "/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/pictures/";
 //        String path = request.getServletContext().getRealPath("/upload/newsPictures/");
-        String path="/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/upload/";
-        System.out.println(path);
-        //创建文件
+        String path = "/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/upload/";
+//        System.out.println(path);
         File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -263,7 +276,7 @@ public class NewsServiceImpl implements INewsService {
         //返回一个字节数组文件的内容
         imgOut.write(file.getBytes());
         imgOut.close();
-        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/upload/"+img;
+        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/upload/" + img;
         return picturePath;
     }
 }
