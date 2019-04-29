@@ -7,11 +7,14 @@ import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IUserDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IVolunteerDao;
+import com.xupt.edu.zwy.platformofhoping.dto.ActivityDetailInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
+import com.xupt.edu.zwy.platformofhoping.dto.VolunteerReq;
 import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Activity;
+import com.xupt.edu.zwy.platformofhoping.model.Volunteer;
 import com.xupt.edu.zwy.platformofhoping.service.IActivityService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
 import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,26 +45,20 @@ public class ActivityServiceImpl implements IActivityService {
     @Resource
     private IActivityDao iActivityDao;
     @Resource
-    private IAdminDao iAdminDao;
-    @Resource
-    private IUserDao iUserDao;
-    @Resource
     private IVolunteerDao iVolunteerDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int addActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request) {
         try {
-            //管理员，部长，组织者
-            if (iAdminDao.isAdmin(RequestUtil.getLoginUserName()) == null || iUserDao.minister(RequestUtil.getLoginUserName()) == null) {
-                throw new BusinessException(ReturnCodes.FAILD, "用户权限不够");
-            }
             activityReq.setActivityId(CommonUtils.getUUId32());
+            System.out.println("@@@@@@@"+activityReq);
             if (file == null) {
                 return iActivityDao.addActivity(activityReq);
             }
             String path = getPathOfFile(file, request);
             activityReq.setContentFile(path);
+            System.out.println("%%%%%%%"+activityReq);
             return iActivityDao.addActivity(activityReq);
 
         } catch (Exception e) {
@@ -95,7 +93,7 @@ public class ActivityServiceImpl implements IActivityService {
             }
             String path = getPathOfFile(file, request);
             activityReq.setSummaryFile(path);
-            return iActivityDao.addActivity(activityReq);
+            return iActivityDao.updateActivity(activityReq);
         } catch (Exception e) {
             log.error("更新活动总结失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -103,10 +101,19 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
-    public Activity getActivityDetail(String activityId) {
+    public ActivityDetailInfo getActivityDetail(String activityId) {
         try {
+            ActivityDetailInfo activityDetailInfo=new ActivityDetailInfo();
             Activity activity = iActivityDao.selectActivityById(activityId);
-            return activity;
+            VolunteerReq volunteerReq=new VolunteerReq();
+            volunteerReq.setActivityId(activityId);
+            List<Volunteer> volunteers=iVolunteerDao.getMyAllVolunteerList(volunteerReq);
+            List<String> userNames=new ArrayList<>();
+            for(Volunteer volunteer:volunteers){
+                userNames.add(volunteer.getUserName());
+            }
+            activityDetailInfo.setActivityDetailInfo(activity,userNames);
+            return activityDetailInfo;
         } catch (Exception e) {
             log.error("活动细节查询失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
@@ -194,7 +201,6 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     private String getPathOfFile(MultipartFile file, HttpServletRequest request) throws IOException {
-        System.out.println(file.getName());
         //todo 验证身份
         String path = "/home/wanyuezhao/spring/bishe/platform-of-hoping-fe/activity/content/";
         File dir = new File(path);
@@ -206,7 +212,7 @@ public class ActivityServiceImpl implements IActivityService {
         FileOutputStream imgOut = new FileOutputStream(new File(dir, suffix));
         imgOut.write(file.getBytes());
         imgOut.close();
-        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/upload/" + suffix;
+        String picturePath = request.getHeader("Origin") + "/platform-of-hoping-fe/activity/content/" + suffix;
         return picturePath;
     }
 

@@ -104,14 +104,21 @@
         </where>
         order by update_time desc,activity_status desc,activity_approval desc
     </select>
+
     <select id="getLastActivity" resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
         select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc limit 0,10;
     </select>
+
     <update id="addActivityJoin" parameterType="java.lang.String">
-       update activity set pepole_join=people+1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
-   </update>
+       update activity set people_join=people_join+1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
+    </update>
+
     <update id="cancelActivityJoin" parameterType="java.lang.String">
-       update activity set pepole_join=people-1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
+       update activity set people_join=people_join-1 where activity_id=#{activityId} and valid=1 and activity_status=30 and activity_approval=30;
    </update>
+
+    <select id="getVolunteerActivity" resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
+        select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc
+    </select>
 
 </mapper>

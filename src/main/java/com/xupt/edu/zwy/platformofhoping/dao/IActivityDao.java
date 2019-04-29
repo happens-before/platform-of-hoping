@@ -29,5 +29,5 @@ public interface IActivityDao {
 
     int cancelActivityJoin(@Param("activityId") String activityId);
 
-
+    List<Activity> getVolunteerActivity();
 }

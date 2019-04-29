@@ -17,4 +17,5 @@ public class VolunteerReq {
     private String userName;
     private String activityId;
     private String activityTopic;
+    private Integer volunteerStatus;
 }

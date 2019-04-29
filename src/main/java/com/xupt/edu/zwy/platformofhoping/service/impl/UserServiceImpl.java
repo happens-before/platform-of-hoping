@@ -48,7 +48,7 @@ public class UserServiceImpl implements IUserService {
 
     public static final String COOKIE_TIME = "platform_time";
 
-    public static final String COOKIE_ISMINISTER = "platform_isMinister";
+    public static final String COOKIE_MINISTER = "platform_minister";
 
     @Resource
     private IUserDao iUserDao;
@@ -77,10 +77,13 @@ public class UserServiceImpl implements IUserService {
         String cookieIdentity = new StringBuilder(COOKIE_IDENTITY).append("=").append("null").append(";Path=/;Max-Age=43200;HttpOnly").toString();
         String cookieName = new StringBuilder(COOKIE_NAME).append("=").append("null").append(";Path=/;Max-Age=43200;HttpOnly").toString();
         String cookieTime = new StringBuilder(COOKIE_TIME).append("=").append("null").append(";Path=/;Max-Age=43200;HttpOnly").toString();
+        String cookieMinister = new StringBuilder(COOKIE_MINISTER).append("=").append("null").append(";Path=/;Max-Age=43200").toString();
+
         response.addHeader("Set-Cookie", cookieUserId);
         response.addHeader("Set-Cookie", cookieIdentity);
         response.addHeader("Set-Cookie", cookieName);
         response.addHeader("Set-Cookie", cookieTime);
+        response.addHeader("Set-Cookie",cookieMinister);
     }
 
     @Override
@@ -157,7 +160,7 @@ public class UserServiceImpl implements IUserService {
                 String cookieUserId = new StringBuilder(COOKIE_USERID).append("=").append(user.getUserId()).append(";Path=/;Max-Age=43200").toString();
                 String cookieIdentity = new StringBuilder(COOKIE_IDENTITY).append("=").append(identity).append(";Path=/;Max-Age=43200").toString();
                 String cookieName = new StringBuilder(COOKIE_NAME).append("=").append(URLEncoder.encode(user.getUserName(), "UTF-8")).append(";Path=/;Max-Age=43200").toString();
-                String cookieMinister = new StringBuilder(COOKIE_ISMINISTER).append("=").append(minister).append(";Path=/;Max-Age=43200").toString();
+                String cookieMinister = new StringBuilder(COOKIE_MINISTER).append("=").append(minister).append(";Path=/;Max-Age=43200").toString();
                 String cookieTime = new StringBuilder(COOKIE_TIME).append("=").append(now).append(";Path=/;Max-Age=43200").toString();
 
                 response.addHeader("Set-Cookie", cookieUserId);

@@ -1,5 +1,6 @@
 package com.xupt.edu.zwy.platformofhoping.service;
 
+import com.xupt.edu.zwy.platformofhoping.dto.ActivityDetailInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface IActivityService {
     int addActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request);
 
-    Activity getActivityDetail(String activityId);
+    ActivityDetailInfo getActivityDetail(String activityId);
 
     int updateActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request);
 

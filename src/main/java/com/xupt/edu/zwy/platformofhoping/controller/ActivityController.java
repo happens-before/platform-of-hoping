@@ -2,6 +2,7 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
+import com.xupt.edu.zwy.platformofhoping.dto.ActivityDetailInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityReq;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
@@ -65,8 +66,11 @@ public class ActivityController {
             activityReq.setOrganizer(RequestUtil.getLoginUserName());
         } else if (identity == UserRoleEnum.ADMIN.getRoleFlag() && activityReq.getFindAll() == 0) {
             activityReq.setPromoter(RequestUtil.getLoginUserName());
-        } else {
-            throw new BusinessException(ReturnCodes.FAILD, "清注册信息");
+        } else if(identity==UserRoleEnum.USER.getRoleFlag() && Integer.parseInt(RequestUtil.getLoginUserStringMinister()) == 1 && activityReq.getFindAll() == 0){
+            activityReq.setPromoter(RequestUtil.getLoginUserName());
+        }
+        else {
+            throw new BusinessException(ReturnCodes.FAILD, "清注册信息或全县步卒");
         }
         int result = activityService.addActivity(file, activityReq, request);
         log.info("out activity/add,result:{}", result);
@@ -74,9 +78,9 @@ public class ActivityController {
     }
 
     @GetMapping("/detail")
-    public CommonJsonResult<Activity> getActivityDetail(@RequestParam(value = "activityId") String activityId) {
+    public CommonJsonResult<ActivityDetailInfo> getActivityDetail(@RequestParam(value = "activityId") String activityId) {
         log.info("into /activity/detail,activityId:{}", activityId);
-        Activity activityDetail = activityService.getActivityDetail(activityId);
+        ActivityDetailInfo activityDetail = activityService.getActivityDetail(activityId);
         log.info("out activity/detail,activityDetail:{}", activityDetail);
         return CommonJsonResult.success(activityDetail);
     }

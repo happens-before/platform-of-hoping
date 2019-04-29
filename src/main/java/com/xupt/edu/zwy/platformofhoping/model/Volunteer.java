@@ -20,6 +20,7 @@ public class Volunteer {
     private String activityId;
     private String activityTopic;
     private Integer valid;
+    private Integer volunteerStatus;
     private Date createTime;
     private Date updateTime;
 }

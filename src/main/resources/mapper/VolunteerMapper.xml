@@ -23,7 +23,7 @@
   </update>
 
     <update id="deleteVolunteer" parameterType="java.lang.String">
-    update volunteer set valid=1 where activity_id=#{activityId};
+    update volunteer set valid=0 where volunteer_id=#{volunteerId};
     </update>
 
     <select id="getMyAllVolunteerList" parameterType="com.xupt.edu.zwy.platformofhoping.dto.VolunteerReq"
@@ -39,6 +39,9 @@
             </if>
             <if test="activityTopic !=null and activityTopic != ''">
                 and activity_topic=#{activityTopic}
+            </if>
+            <if test="volunteerStatus !=null and  volunteerStatus!= ''">
+                and volunteer_status=#{volunteerStatus}
             </if>
         </where>
         order by update_time desc ,volunteer_status desc

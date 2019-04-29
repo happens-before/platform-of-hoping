@@ -30,6 +30,9 @@ public class RequestUtil {
 
     public static final String COOKIE_TIME = "platform_time";
 
+    public static final String COOKIE_MINISTER = "platform_minister";
+
+
     /**
      * 获取当前请求的request
      */
@@ -87,6 +90,17 @@ public class RequestUtil {
                 request.setAttribute(COOKIE_IDENTITY, getCookieValue(request, COOKIE_IDENTITY));
             }
             return (String) request.getAttribute(COOKIE_IDENTITY);
+        }
+        return null;
+    }
+
+    public static String getLoginUserStringMinister() {
+        HttpServletRequest request = getRequest();
+        if (request != null) {
+            if (request.getAttribute(COOKIE_MINISTER) == null) {
+                request.setAttribute(COOKIE_MINISTER, getCookieValue(request, COOKIE_MINISTER));
+            }
+            return (String) request.getAttribute(COOKIE_MINISTER);
         }
         return null;
     }
