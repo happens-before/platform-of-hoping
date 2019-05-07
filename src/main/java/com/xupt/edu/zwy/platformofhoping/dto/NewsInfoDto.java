@@ -5,7 +5,7 @@ import com.xupt.edu.zwy.platformofhoping.model.News;
 import com.xupt.edu.zwy.platformofhoping.model.Picture;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**

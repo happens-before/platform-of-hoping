@@ -70,7 +70,7 @@ public class ActivityController {
             activityReq.setPromoter(RequestUtil.getLoginUserName());
         }
         else {
-            throw new BusinessException(ReturnCodes.FAILD, "清注册信息或全县步卒");
+            throw new BusinessException(ReturnCodes.FAILD, "清注册信息或权限不足");
         }
         int result = activityService.addActivity(file, activityReq, request);
         log.info("out activity/add,result:{}", result);
@@ -136,6 +136,9 @@ public class ActivityController {
     @PostMapping("/summary")
     public CommonJsonResult summaryActivity(ActivityReq activityReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
         log.info("into /activity/summary,activityReq:{}", activityReq);
+        if(file==null){
+            return CommonJsonResult.fail(ReturnCodes.NULL_POINTER,"文件不能为空，请上传文件");
+        }
         int result = activityService.summaryActivity(file, activityReq, request);
         log.info("out activity/summary,result:{}", result);
         return CommonJsonResult.success();

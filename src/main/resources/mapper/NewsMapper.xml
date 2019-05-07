@@ -16,7 +16,7 @@
     </sql>
 
     <select id="selectLastTenNews" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsDto">
-        select news_id,news_name,update_time from news where valid=1 and status=30 order by update_time desc,news_count desc limit 0,10;
+        select news_id,news_name,update_time from news where valid=1 and status=30 order by update_time desc,news_count desc
     </select>
 
     <select id="selectNewsInfoById" resultType="com.xupt.edu.zwy.platformofhoping.model.News" parameterType="java.lang.String">

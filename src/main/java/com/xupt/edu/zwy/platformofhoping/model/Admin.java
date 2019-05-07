@@ -1,8 +1,8 @@
 package com.xupt.edu.zwy.platformofhoping.model;
 
 import lombok.Data;
+import java.sql.Date;
 
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA

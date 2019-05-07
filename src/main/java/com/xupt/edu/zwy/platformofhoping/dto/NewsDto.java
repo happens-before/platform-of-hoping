@@ -3,7 +3,8 @@ package com.xupt.edu.zwy.platformofhoping.dto;
 import lombok.Data;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 /**
  * Created with IntelliJ IDEA

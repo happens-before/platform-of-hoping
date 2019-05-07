@@ -69,7 +69,7 @@ public class NewsController {
         CheckArgumentUtil.checkNewsId(newsId);
         NewsInfoDto newsInfoById = newsService.getNewsInfoById(newsId);
 
-        log.info("out /news/info,newsInfoById:{}",newsInfoById);
+        log.info("out /news/info,newsInfoById:{}", newsInfoById);
         return CommonJsonResult.success(newsInfoById);
 
     }
@@ -86,14 +86,13 @@ public class NewsController {
         return CommonJsonResult.success(replies);
     }
 
-    @GetMapping("/listTenLastNews")
-    public CommonJsonResult<List<NewsDto>> newsTenLastList() {
-        log.info("into /news/listTenLastNews");
+    @GetMapping("/listLastNews")
+    public CommonJsonResult<PageInfo<NewsDto>> newsTenLastList(NewsListReq newsListReq) {
+        log.info("into /news/listLastNews,newsListReq:{}", newsListReq);
         //todo 身份验证 管理员，学生会部长以及组织可以发布新闻并能查看所有的新闻信息,而以学生身份登陆只能查看最新50条新闻
-        List<NewsDto> tenLastNews = newsService.getTenLastNews();
-        System.out.println(tenLastNews);
-        log.info("out /news/listTenLastNews");
-        return CommonJsonResult.success(tenLastNews);
+        PageInfo<NewsDto> lastNews = newsService.getLastNews(newsListReq);
+        log.info("out /news/listLastNews");
+        return CommonJsonResult.success(lastNews);
     }
 
     @GetMapping("/list")
@@ -109,18 +108,18 @@ public class NewsController {
     }
 
     @PostMapping("/add")
-    public CommonJsonResult addNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
-        log.info("into /news/add,file:{},newsAddReq:{}", file, newsAddReq,request);
-        int result = newsService.addNews(file, newsAddReq,request);
+    public CommonJsonResult addNews(NewsAddReq newsAddReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
+        log.info("into /news/add,file:{},newsAddReq:{}", file, newsAddReq, request);
+        int result = newsService.addNews(file, newsAddReq, request);
         log.info("out /news/add,result:{}", result);
         return CommonJsonResult.success();
     }
 
     @PostMapping("/update")
-    public CommonJsonResult updateNews(NewsAddReq newsAddReq,@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) {
+    public CommonJsonResult updateNews(NewsAddReq newsAddReq, @RequestParam(value = "file") MultipartFile file, HttpServletRequest request) {
         log.info("into /news/update,newsAddReq:{}", newsAddReq);
         //todo 检查参数合法性
-        int result = newsService.updateNews(file,newsAddReq,request);
+        int result = newsService.updateNews(file, newsAddReq, request);
         log.info("out /news/update,result:{}", result);
         return CommonJsonResult.success();
     }

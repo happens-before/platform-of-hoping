@@ -10,7 +10,7 @@
       update_time
     </sql>
     <select id="getNewsHomeInfo" resultType="com.xupt.edu.zwy.platformofhoping.dto.NewsHomeDto">
-        select picture_path,news_id from picture order by update_time desc limit 0,5;
+        select picture_path,picture.news_id as news_id ,news_name from picture,news where news.status=30 and news.news_id=picture.news_id and valid=1 order by picture.update_time desc limit 0,4;
     </select>
 
     <insert id="addPicture" parameterType="com.xupt.edu.zwy.platformofhoping.dto.NewsAddReq">

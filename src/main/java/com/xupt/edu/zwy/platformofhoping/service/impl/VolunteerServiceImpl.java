@@ -39,6 +39,10 @@ public class VolunteerServiceImpl implements IVolunteerService {
     public int addVolunteer(VolunteerReq volunteerReq) {
         try {
             volunteerReq.setVolunteerId(CommonUtils.getUUId32());
+            Activity activity = iActivityDao.selectActivityById(volunteerReq.getActivityId());
+            if (activity.getPeopleTotal().equals(activity.getPeopleJoin())) {
+                throw new BusinessException(ReturnCodes.FAILD, "抱歉，报名参加人数已满");
+            }
             if (iVolunteerDao.addVolunteer(volunteerReq) == 1 && iActivityDao.addActivityJoin(volunteerReq.getActivityId()) == 1) {
                 return 1;
             }
@@ -82,9 +86,9 @@ public class VolunteerServiceImpl implements IVolunteerService {
         try {
             List<Activity> volunteerActivity = iActivityDao.getVolunteerActivity();
             System.out.println(volunteerActivity);
-            PageInfo<Activity> pageInfo=new PageInfo<>(volunteerActivity);
+            PageInfo<Activity> pageInfo = new PageInfo<>(volunteerActivity);
             return pageInfo;
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("志愿者活动列表获取失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }

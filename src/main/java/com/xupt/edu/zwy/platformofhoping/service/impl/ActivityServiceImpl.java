@@ -3,9 +3,6 @@ package com.xupt.edu.zwy.platformofhoping.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.xupt.edu.zwy.platformofhoping.common.BusinessException;
 import com.xupt.edu.zwy.platformofhoping.dao.IActivityDao;
-import com.xupt.edu.zwy.platformofhoping.dao.IAdminDao;
-import com.xupt.edu.zwy.platformofhoping.dao.IOrganizerDao;
-import com.xupt.edu.zwy.platformofhoping.dao.IUserDao;
 import com.xupt.edu.zwy.platformofhoping.dao.IVolunteerDao;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityDetailInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.ActivityListReq;
@@ -17,7 +14,6 @@ import com.xupt.edu.zwy.platformofhoping.model.Activity;
 import com.xupt.edu.zwy.platformofhoping.model.Volunteer;
 import com.xupt.edu.zwy.platformofhoping.service.IActivityService;
 import com.xupt.edu.zwy.platformofhoping.util.CommonUtils;
-import com.xupt.edu.zwy.platformofhoping.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,13 +48,11 @@ public class ActivityServiceImpl implements IActivityService {
     public int addActivity(MultipartFile file, ActivityReq activityReq, HttpServletRequest request) {
         try {
             activityReq.setActivityId(CommonUtils.getUUId32());
-            System.out.println("@@@@@@@"+activityReq);
             if (file == null) {
                 return iActivityDao.addActivity(activityReq);
             }
             String path = getPathOfFile(file, request);
             activityReq.setContentFile(path);
-            System.out.println("%%%%%%%"+activityReq);
             return iActivityDao.addActivity(activityReq);
 
         } catch (Exception e) {
@@ -103,16 +97,16 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityDetailInfo getActivityDetail(String activityId) {
         try {
-            ActivityDetailInfo activityDetailInfo=new ActivityDetailInfo();
+            ActivityDetailInfo activityDetailInfo = new ActivityDetailInfo();
             Activity activity = iActivityDao.selectActivityById(activityId);
-            VolunteerReq volunteerReq=new VolunteerReq();
+            VolunteerReq volunteerReq = new VolunteerReq();
             volunteerReq.setActivityId(activityId);
-            List<Volunteer> volunteers=iVolunteerDao.getMyAllVolunteerList(volunteerReq);
-            List<String> userNames=new ArrayList<>();
-            for(Volunteer volunteer:volunteers){
+            List<Volunteer> volunteers = iVolunteerDao.getMyAllVolunteerList(volunteerReq);
+            List<String> userNames = new ArrayList<>();
+            for (Volunteer volunteer : volunteers) {
                 userNames.add(volunteer.getUserName());
             }
-            activityDetailInfo.setActivityDetailInfo(activity,userNames);
+            activityDetailInfo.setActivityDetailInfo(activity, userNames);
             return activityDetailInfo;
         } catch (Exception e) {
             log.error("活动细节查询失败，请重试");
@@ -125,8 +119,10 @@ public class ActivityServiceImpl implements IActivityService {
     @Transactional(rollbackFor = Exception.class)
     public int deleteActivity(String activityId) {
         try {
-            int result = iActivityDao.deleteActivity(activityId);
-            return result;
+            if (iActivityDao.deleteActivity(activityId) == 1 && iVolunteerDao.overdueVolunteer(activityId) == 1) {
+                return 1;
+            }
+            return 0;
         } catch (Exception e) {
             log.error("删除活动失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");

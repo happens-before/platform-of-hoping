@@ -14,4 +14,5 @@ import lombok.Data;
 public class NewsHomeDto {
     private String picturePath;
     private String newsId;
+    private String newsName;
 }

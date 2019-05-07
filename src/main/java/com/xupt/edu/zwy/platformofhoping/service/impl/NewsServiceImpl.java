@@ -123,12 +123,14 @@ public class NewsServiceImpl implements INewsService {
     }
 
     @Override
-    public List<NewsDto> getTenLastNews() {
+    public PageInfo<NewsDto> getLastNews(NewsListReq newsListReq) {
+        PageHelper.startPage(newsListReq.getPageNum(), 10);
         try {
             List<NewsDto> news = iNewsDao.selectLastTenNews();
-            return news;
+            PageInfo<NewsDto> pageInfo = new PageInfo<>(news);
+            return pageInfo;
         } catch (Exception e) {
-            log.error("查询最新10条新闻失败失败，请重试");
+            log.error("查询最新新闻失败，请重试");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
         }
     }

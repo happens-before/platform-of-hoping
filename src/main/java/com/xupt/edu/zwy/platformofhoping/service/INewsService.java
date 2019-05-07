@@ -30,7 +30,7 @@ public interface INewsService {
 
     List<Reply> getReplyByCommentId(String commentId);
 
-    List<NewsDto> getTenLastNews();
+    PageInfo<NewsDto> getLastNews(NewsListReq newsListReq);
 
     PageInfo<News> getNewsList(NewsListReq newsListReq);
 
