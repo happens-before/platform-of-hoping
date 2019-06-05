@@ -51,8 +51,6 @@ public class NewsController {
     @GetMapping("/home")
     public CommonJsonResult<HomeInfo> newsHome() {
         log.info("into /news/home");
-        //todo 验证本人身份
-
         //从数据库取数据
         HomeInfo homeInfo = newsService.getNewsHome();
 

@@ -3,6 +3,7 @@ package com.xupt.edu.zwy.platformofhoping.controller;
 import com.xupt.edu.zwy.platformofhoping.common.CommonJsonResult;
 import com.xupt.edu.zwy.platformofhoping.dto.PageInfo;
 import com.xupt.edu.zwy.platformofhoping.dto.VolunteerReq;
+import com.xupt.edu.zwy.platformofhoping.enums.ReturnCodes;
 import com.xupt.edu.zwy.platformofhoping.model.Activity;
 import com.xupt.edu.zwy.platformofhoping.model.Volunteer;
 import com.xupt.edu.zwy.platformofhoping.service.IVolunteerService;
@@ -42,6 +43,12 @@ public class VolunteerController {
     public CommonJsonResult addVolunteer(@RequestBody VolunteerReq volunteerReq) {
         log.info("into /volunteer/add,volunteerReq:{}", volunteerReq);
         int result = volunteerService.addVolunteer(volunteerReq);
+        if(result==0){
+            return CommonJsonResult.fail(ReturnCodes.FAILD,"不能重复报名");
+        }
+        if(result==2){
+            return CommonJsonResult.fail(ReturnCodes.FAILD,"抱歉，报名参加人数已满");
+        }
         log.info("out /volunteer/add,result:{}", result);
         return CommonJsonResult.success();
     }

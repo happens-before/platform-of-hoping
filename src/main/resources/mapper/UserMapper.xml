@@ -116,6 +116,6 @@
     </update>
 
     <select id="minister" parameterType="java.lang.String" resultType="com.xupt.edu.zwy.platformofhoping.model.User">
-        select * from user where user_name=#{userName};
+        select * from user where user_name=#{userName} and minister=1 and valid=1;
     </select>
 </mapper>

@@ -5,7 +5,6 @@ import com.xupt.edu.zwy.platformofhoping.dto.VolunteerReq;
 import com.xupt.edu.zwy.platformofhoping.model.Activity;
 import com.xupt.edu.zwy.platformofhoping.model.Volunteer;
 
-import java.util.List;
 
 public interface IVolunteerService {
     int addVolunteer(VolunteerReq volunteerReq);

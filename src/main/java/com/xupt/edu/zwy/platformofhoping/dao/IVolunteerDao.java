@@ -16,4 +16,6 @@ public interface IVolunteerDao {
     int deleteVolunteer(@Param("volunteerId") String volunteerId);
 
     List<Volunteer> getMyAllVolunteerList(VolunteerReq volunteerReq);
+
+    Volunteer selectByName(VolunteerReq volunteerReq);
 }

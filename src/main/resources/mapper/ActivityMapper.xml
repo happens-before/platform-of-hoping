@@ -106,7 +106,7 @@
     </select>
 
     <select id="getLastActivity" resultType="com.xupt.edu.zwy.platformofhoping.model.Activity">
-        select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc limit 0,10;
+        select * from activity where valid=1 and activity_status =30 and activity_approval=30 order by update_time desc limit 0,5;
     </select>
 
     <update id="addActivityJoin" parameterType="java.lang.String">

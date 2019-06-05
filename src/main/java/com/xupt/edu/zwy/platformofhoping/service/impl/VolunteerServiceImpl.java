@@ -41,15 +41,21 @@ public class VolunteerServiceImpl implements IVolunteerService {
             volunteerReq.setVolunteerId(CommonUtils.getUUId32());
             Activity activity = iActivityDao.selectActivityById(volunteerReq.getActivityId());
             if (activity.getPeopleTotal().equals(activity.getPeopleJoin())) {
-                throw new BusinessException(ReturnCodes.FAILD, "抱歉，报名参加人数已满");
+                System.out.println(activity.getPeopleJoin());
+                return 2;
             }
-            if (iVolunteerDao.addVolunteer(volunteerReq) == 1 && iActivityDao.addActivityJoin(volunteerReq.getActivityId()) == 1) {
-                return 1;
+            System.out.println(iVolunteerDao.selectByName(volunteerReq));
+            if(iVolunteerDao.selectByName(volunteerReq)==null){
+                if (iVolunteerDao.addVolunteer(volunteerReq) == 1 && iActivityDao.addActivityJoin(volunteerReq.getActivityId()) == 1) {
+                    return 1;
+                }
             }
+
             return 0;
         } catch (Exception e) {
             log.error("志愿者添加失败");
             throw new BusinessException(ReturnCodes.FAILD, "服务器很忙");
+
         }
     }
 

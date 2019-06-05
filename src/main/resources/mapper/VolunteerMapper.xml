@@ -46,6 +46,9 @@
         </where>
         order by update_time desc ,volunteer_status desc
     </select>
-
+<select id="selectByName" parameterType="com.xupt.edu.zwy.platformofhoping.dto.VolunteerReq"
+        resultType="com.xupt.edu.zwy.platformofhoping.model.Volunteer">
+    select * from volunteer where valid=1 and volunteer_status=1 and user_name=#{userName} and activity_id=#{activityId};
+</select>
 
 </mapper>

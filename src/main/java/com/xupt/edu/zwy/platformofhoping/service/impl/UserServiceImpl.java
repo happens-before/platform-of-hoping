@@ -139,6 +139,7 @@ public class UserServiceImpl implements IUserService {
             if (user == null) {
                 return false;
             }
+            System.out.println(user);
             setCookie(user, response);
             return true;
         } catch (Exception e) {
@@ -152,7 +153,9 @@ public class UserServiceImpl implements IUserService {
         try {
             Optional<User> optionalUser = Optional.fromNullable(user);
             int identity = getUserIdentityByName(user.getUserName());
+            System.out.println(identity+"AAA");
             int minister = minister(user.getUserName());
+            System.out.println(minister+"NNNN");
             if (!optionalUser.isPresent()) {
                 log.error("获得的用户为空");
             } else {
